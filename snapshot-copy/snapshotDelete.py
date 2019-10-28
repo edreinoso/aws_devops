@@ -7,6 +7,7 @@ destination_region = 'us-east-1'
 destination_client = boto3.client('ec2', region_name=destination_region)
 policyDates = 7
 
+
 def lambda_handler(event, context):
     client = destination_client.describe_snapshots(
         Filters=[
@@ -16,26 +17,26 @@ def lambda_handler(event, context):
             },
         ]
     )
-    print(client)
+    # print(client)
     today = datetime.now(tzutc())
-    
+
     past = today - timedelta(days=policyDates)
-    
+
     for snapshot in client['Snapshots']:
-        print('\n'+str(snapshot['StartTime']))
-        if snapshot['StartTime'] < past:
-            print(snapshot['Description'])
-            if 'ami' in snapshot['Description']:
-                print('This snapshot is from an AMI, skip!')
-                break
-            else:
-                print('Snapshot is too old, gotta be deleted')
+        print('\n' + snapshot['Description'])
+        print(str(snapshot['StartTime']))
+        if 'ami' in snapshot['Description']:
+            print('This is an AMI snapshot')
+            continue
+        else:
+            if snapshot['StartTime'] < past:
+                print('snapshot is smaller ' + snapshot['SnapshotId'])
                 # This is going to fail becuase there are some snapshots that
                 # are taken from amis.
-                # delete_snapshot(destination_client, snapshot['SnapshotId'])
-        else:
-            print(snapshot['Description'])
-            print('Snapshot can be kept')
+                delete_snapshot(destination_client, snapshot['SnapshotId'])
+            else:
+                print(snapshot['Description'])
+                print('Snapshot can be kept')
         print('--------')
 
 
