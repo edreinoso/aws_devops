@@ -7,10 +7,9 @@ wide_open = '0.0.0.0/0'
 # exception handling variables
 exFromPort = 'FromPort'
 exToPort = 'ToPort'
-region = 'us-east-1'
+region = 'us-east-2'
 
-
-client = boto3.client('ec2', region)
+client = boto3.client('ec2', region_name=region)
 
 def lambda_handler(event, context):
     response = client.describe_security_groups(
@@ -43,13 +42,14 @@ def lambda_handler(event, context):
             if exFromPort in ip:
                 # print('---> yes, its available')
                 fromPort = ip['FromPort']
+                ipProtocol = ip['IpProtocol']
                 toPort = ip['ToPort']
                 print('From Port: ' + str(fromPort) +
                       '\t' + ' To Port: ' + str(toPort))
             for cidr in ip['IpRanges']:
                 if cidr['CidrIp'] == wide_open:
                     print('Hello World: close below security group')
-                    deleteRule(response, fromPort, toPort, wide_open)
+                    deleteRule(response, groupId, fromPort, toPort, ipProtocol, wide_open)
                     # call a function here!
                 print('\t' + ' - Cidr: ' + cidr['CidrIp'])
         print('\n')
@@ -59,14 +59,14 @@ def lambda_handler(event, context):
     return ("Completed")
 
 
-def deleteRule(response, fromPort, toPort, wide_open):
+def deleteRule(response, groupId, fromPort, toPort, ipProtocol, wide_open):
     response = client.revoke_security_group_ingress(
-        GroupId='string',
+        GroupId=groupId,
         IpPermissions=[
             {
                 'FromPort': fromPort,
                 'ToPort': toPort,
-                'IpProtocol': 'string',
+                'IpProtocol': ipProtocol,
                 'IpRanges': [{'CidrIp': wide_open}]
             },
         ],
