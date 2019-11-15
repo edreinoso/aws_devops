@@ -11,12 +11,21 @@ region = 'us-east-2'
 
 client = boto3.client('ec2', region_name=region)
 
+# data will be sent to S3 for analysis
+bucket_name = "security-groups-checker"
+file_name = "securityGroups.txt"
+lambda_path = "/tmp/" + file_name
+s3_path = "/" + file_name
+
 def lambda_handler(event, context):
+    #event['region']
     response = client.describe_security_groups(
         Filters=[
             {
                 'Name': 'vpc-id',
-                'Values': ['vpc-0c9013e7f3bf005cc']
+                # this should just be a variable that's passed with the event
+                'Values': [event['dev']]
+                
             },
         ]
     )
@@ -25,14 +34,16 @@ def lambda_handler(event, context):
 
     # variables required to delete rule
     groupId = ''
+    groupName = ''
     fromPort = ''
     toPort = ''
+    ipProtocol = ''
     # groupName = ''
 
     for sg in response["SecurityGroups"]:
         # grab these variables so that they're sent to the revoke security group access
         groupId = sg['GroupId']
-        # groupName = sg['GroupName']
+        groupName = sg['GroupName']
 
         print(sg)
         # print('Group Id: ' + groupId + '\t' + ' Group Name: ' + groupName)
@@ -49,15 +60,25 @@ def lambda_handler(event, context):
             for cidr in ip['IpRanges']:
                 if cidr['CidrIp'] == wide_open:
                     print('Hello World: close below security group')
-                    deleteRule(response, groupId, fromPort, toPort, ipProtocol, wide_open)
-                    # call a function here!
+                    string = writeToFile(groupId, groupName, fromPort, toPort, ipProtocol, wide_open)
+                    # writeToFile(groupId, fromPort, toPort, ipProtocol, wide_open)
+                    # deleteRule(response, groupId, fromPort, toPort, ipProtocol, wide_open)
                 print('\t' + ' - Cidr: ' + cidr['CidrIp'])
         print('\n')
 
     print('\n')
-
+    
+    # sending data to S3
+    encoded_string = string.encode("utf-8")
+    s3 = boto3.resource("s3")
+    s3.Bucket(bucket_name).put_object(Key=s3_path, Body=encoded_string)
+    
     return ("Completed")
 
+
+def writeToFile(groupId, groupName, fromPort, toPort, ipProtocol, wide_open):
+    string='GroupId: ' + groupId + '\nGroupName: ' + groupName + '\nFromPort: ' + str(fromPort) + '\nToPort: ' + str(toPort) + '\nIpProtocol: ' + ipProtocol + '\nRules: ' + wide_open + '\n'
+    return string
 
 def deleteRule(response, groupId, fromPort, toPort, ipProtocol, wide_open):
     response = client.revoke_security_group_ingress(
