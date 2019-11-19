@@ -6,6 +6,7 @@ range_170 = '170.0.0.0/8'
 range_172 = '172.0.0.0/8'
 range_167 = '167.0.0.0/8'  # this range is going to have to be changed to 167.219.0.0/16
 range_140 = '140.0.0.0/8'
+range_10 = '10.0.0.0/8'
 
 # exception handling variables
 exFromPort = 'FromPort'
@@ -16,7 +17,7 @@ client = boto3.client('ec2', region_name=region)
 
 # data will be sent to S3 for analysis
 bucket_name = "security-groups-checker"
-file_name = "tstSecurityGroups.txt"
+file_name = "infSecurityGroups-before.txt"
 lambda_path = "/tmp/" + file_name
 s3_path = "/clean_up_nov_19/" + file_name
 
@@ -28,13 +29,14 @@ def lambda_handler(event, context):
             {
                 'Name': 'vpc-id',
                 # this should just be a variable that's passed with the event
-                'Values': [event['tst']]
+                'Values': [event['inf']]
             },
         ]
     )
 
     # print('\n')
 
+    # variables required to delete rule
     num = 0
     groupId = ''
     groupName = ''
@@ -69,16 +71,16 @@ def lambda_handler(event, context):
                         string = writeToFile(
                             num, groupId, groupName, fromPort, toPort, ipProtocol, range_170)
                         finalString += string
-                        deleteRule(response, groupId, fromPort,
-                                   toPort, ipProtocol, range_170)
+                        # deleteRule(response, groupId, fromPort,
+                        #            toPort, ipProtocol, range_170)
 
                     if cidr['CidrIp'] == range_172:
                         # print('\t\tHello World: 172 security group')
                         string = writeToFile(
                             num, groupId, groupName, fromPort, toPort, ipProtocol, range_172)
                         finalString += string
-                        deleteRule(response, groupId, fromPort,
-                                   toPort, ipProtocol, range_172)
+                        # deleteRule(response, groupId, fromPort,
+                        #            toPort, ipProtocol, range_172)
 
                     # If the program goes to the 140 range, change it for 10.140
                     if cidr['CidrIp'] == range_140:
@@ -86,10 +88,10 @@ def lambda_handler(event, context):
                         string = writeToFile(
                             num, groupId, groupName, fromPort, toPort, ipProtocol, range_140)
                         finalString += string
-                        deleteRule(response, groupId, fromPort,
-                                   toPort, ipProtocol, range_140)
-                        applyRule(response, groupId, fromPort, toPort,
-                                  ipProtocol, '10.140.0.0/16', 'DHS Network')
+                        # deleteRule(response, groupId, fromPort,
+                        #            toPort, ipProtocol, range_140)
+                        # applyRule(response, groupId, fromPort, toPort,
+                        #           ipProtocol, '10.140.0.0/16', 'DHS Network')
 
                     # If the program goes to the 167/8 range, change it for 167/16
                     if cidr['CidrIp'] == range_167:
@@ -97,10 +99,21 @@ def lambda_handler(event, context):
                         string = writeToFile(
                             num, groupId, groupName, fromPort, toPort, ipProtocol, range_167)
                         finalString += string
-                        deleteRule(response, groupId, fromPort,
-                                   toPort, ipProtocol, range_167)
-                        applyRule(response, groupId, fromPort, toPort,
-                                  ipProtocol, '167.219.0.0/16', 'Deloitte Network')
+                        # deleteRule(response, groupId, fromPort,
+                        #            toPort, ipProtocol, range_167)
+                        # applyRule(response, groupId, fromPort, toPort,
+                        #           ipProtocol, '167.219.0.0/16', 'Deloitte Network')
+
+                    # If the program goes to the 10/8 range, change it for 10.139/16
+                    if cidr['CidrIp'] == range_10:
+                        # print('\t\tHello World: 10 security group')
+                        string = writeToFile(
+                            num, groupId, groupName, fromPort, toPort, ipProtocol, range_10)
+                        finalString += string
+                        # deleteRule(response, groupId, fromPort,
+                        #            toPort, ipProtocol, range_10)
+                        # applyRule(response, groupId, fromPort, toPort,
+                        #           ipProtocol, '10.139.0.0/16', 'AWS Network')
     #     print('\n')
     # print('\n')
 
@@ -140,6 +153,8 @@ def applyRule(response, groupId, fromPort, toPort, ipProtocol, cidrip, cidr_desc
     )
 
 # this method will revoke security group rules
+
+
 def deleteRule(response, groupId, fromPort, toPort, ipProtocol, cidrip):
     response = client.revoke_security_group_ingress(
         GroupId=groupId,
