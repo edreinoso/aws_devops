@@ -7,8 +7,7 @@ ec2 = boto3.client('ec2', region_name=region)
 def lambda_handler(event, context):
     tags_name = 'Tags'
     tag_volume = createTag()
-    client = ec2.describe_volumes(
-    )
+    client = ec2.describe_volumes()
     
     condition = 0
     

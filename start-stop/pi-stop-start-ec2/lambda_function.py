@@ -18,10 +18,10 @@ def lambda_handler(event, context):
                     if (tags['Key'] == 'Name'):
                         if ('dev' in tags['Value']):
                             print(tags['Value'])
-                            # if (event['action'] == 'start'):
-                            #     print('stopping instance:' + instance)
-                            #     stopInstance.stop_ec2(instance, client)
-                            # elif (event['action'] == 'stop'):
-                            #     print('starting instance:' + instance)
-                            #     startInstance.start_ec2(instance, client)
+                            if (event['action'] == 'start'):
+                                print('stopping instance:' + instance)
+                                stopInstance.stop_ec2(instance, client)
+                            elif (event['action'] == 'stop'):
+                                print('starting instance:' + instance)
+                                startInstance.start_ec2(instance, client)
     print ('\n')

@@ -1,7 +1,7 @@
 import boto3
 
-source_region = 'us-east-2'
-destination_region = 'us-east-1'
+source_region = 'us-east-1'
+destination_region = 'us-east-2'
 
 # Connect to EC2 in Source region
 source_client = boto3.client('ec2', region_name=source_region)
@@ -10,7 +10,6 @@ destination_client = boto3.client('ec2', region_name=destination_region)
 
 # These keys are from north virginia region and they represents aws_ebs and global_kms
 kms_key = '45f02b69-219a-4fad-b6e3-44056c46ca1c'
-
 
 def lambda_handler(event, context):
     snapshot_tag_name = ''
@@ -21,16 +20,8 @@ def lambda_handler(event, context):
         Filters=[
             {
                 'Name': 'owner-id',
-                'Values': ['698236466819']
-            },
-            {
-                'Name': 'tag:DR',
-                'Values': ['false']
-            },
-            # {
-            #     'Name': 'tag:Test',
-            #     'Values': ['Y']
-            # }
+                'Values': ['130193131803']
+            }
         ]
     )
 
@@ -39,7 +30,7 @@ def lambda_handler(event, context):
         snapshot_name = snapshot['Description']
         print('Snap_id primary region: ' + snapshot_id)
         print(str(i))
-        if i > 5:
+        if i > 5: # there is a limit of 5 to be transferred to a diff region
             # print('You need to stop RIGHT NOW!')
             return ("Maximum amount of snapshots have been sent")
             # exit(0)
@@ -66,7 +57,6 @@ def lambda_handler(event, context):
         print('--------' + '\n')
 
 # This function would copy the snapshots to another region
-
 def copy_snapshot(snapshot_id, snapshot_name, key_name_tag, snapshot_tag_name):
     print("Started copying snapshot_id: " + snapshot_id +
           "from: " + source_region + ", to: " + destination_region)
@@ -87,8 +77,6 @@ def copy_snapshot(snapshot_id, snapshot_name, key_name_tag, snapshot_tag_name):
     return response['SnapshotId']
 
 # This function will create a tag to snaphots
-
-
 def create_tag(client, snapshot_id, key, value):
     # print("Creating tag - Key: " + key + " Value" + '\t' +
     #       value + ", snapshot_id: " + snapshot_id)

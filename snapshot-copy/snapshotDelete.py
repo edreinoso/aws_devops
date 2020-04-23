@@ -13,7 +13,7 @@ def lambda_handler(event, context):
         Filters=[
             {
                 'Name': 'owner-id',
-                'Values': ['698236466819']
+                'Values': ['130193131803']
             },
         ]
     )

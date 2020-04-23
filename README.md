@@ -1,5 +1,7 @@
 # AWS Devops
 
+![aws-devops](https://personal-website-assets.s3.amazonaws.com/Projects/aws_devops.png)
+
 ### Goal
 Creating automation tools that would aid the management of an AWS environment
 
@@ -8,7 +10,7 @@ While I was working at Deloitte as a Cloud Engineer, there were many repetitive 
 
 ### Use Cases
 There are a lot of posibilities that can be expanded from using this concept. Among some of these, I highlight: 
-- EBS (Elastic Block Storage) and NIC (Network Interface Card) name tag automation
+- Elastic Block Storage EBS and Network Interface Card NIC name tag automation
   - This provides a name after the EC2 instance name
 
 - Security groups open rules closure

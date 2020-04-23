@@ -21,25 +21,12 @@ def lambda_handler(event, context):
     
     client = boto3.client('ec2', event['region'])
 
-    ec2 = client.describe_instances(
-        Filters=[
-            # {
-            #     'Name': 'vpc-id',
-            #     'Values': [event['']]
-            # },
-            # {
-            #     'Name': 'tag:Test',
-            #     'Values': ['Y']
-            
-            # },
-        ],
-    )
+    ec2 = client.describe_instances()
     
     print('\n')
 
     for reservation in ec2["Reservations"]:
         
-        # print(reservation)
 
         for instance in reservation["Instances"]:
 
@@ -48,25 +35,17 @@ def lambda_handler(event, context):
             # 1st part: Put the instance tags in a variable in order
             # to do some comparison
             if areThereEC2Tags in instance:
-                # print('There is a tag inside of this instance')
                 len_tags = len(instance['Tags'])
                 for tags in instance["Tags"]:
-                    # print(type(tags))
-                    # print('length of tags: ' + str(len_tags))    
-                    # print('this is D: ' + str(d))
                     print('tag key: ' + tags['Key'] + ' tag value: ' + tags['Value'])
                     if (tags['Key'] == 'Name'):
                         # value = tags['Value']
                         
                         ec2_tag_key.append(tags['Key'])
                         ec2_tag_value.append(tags['Value'])
-                        # print(type(ec2_tag_value))
-                        # print(len(ec2_tag_value))
                         print('\tYY - ec2 tag - key: ' + ec2_tag_key[x] + ' value: ' + ec2_tag_value[x])
                         break
                     elif (d >= len_tags-1):
-                    # elif (tags['Key'] != 'Name'):
-                    # # elif (d >= len_tags-1 and tags['Key'] != 'Name'):
                         print('d is last and no name tag for ec2 instance')
                         ec2_tag_key.append('Name')
                         ec2_tag_value.append('')
@@ -99,8 +78,6 @@ def lambda_handler(event, context):
                                 # We want to check for the key 'name'
                                 if (nic_tags['Key'] == 'Name'):
                                     # if the value is not equal the ec2 instance tag
-                                    # print('len(ec2_tag_value): '+ str(len(ec2_tag_value)))
-                                    # if(len(ec2_tag_value) > 0):
                                     if (ec2_tag_value[x] != ""):
                                         print('Not empty!!!')
                                         print('\tnic card name: ' + nic_tags['Value'] + ' - ec2-tag: ' + ec2_tag_value[x])
