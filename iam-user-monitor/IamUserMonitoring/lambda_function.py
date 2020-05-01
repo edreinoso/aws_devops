@@ -4,8 +4,6 @@ from datetime import timedelta
 from dateutil.tz import *
 
 def lambda_handler(event, context):
-    # As a note 4-21: should definitely make another function that evaluates users who have not logged in the console ever!
-
     isThereAPassUsed = "PasswordLastUsed" # evaluates users who have logged in only
     daysBack = 1
     arrayOfUsersSignIn = [] # list
@@ -17,7 +15,9 @@ def lambda_handler(event, context):
 
     today = datetime.now(tzutc())
     temp = today - timedelta(days=daysBack)
-    # print(str(today) + '\n' + str(temp.strftime("%a, %d %B, %y")) + '\n')
+    print(str(today) + '\n' + str(temp.strftime("%a, %d %B, %y")) + '\n')
+
+    now = datetime.now()
 
     for users in iam["Users"]:
         if isThereAPassUsed in users:
@@ -26,12 +26,13 @@ def lambda_handler(event, context):
     print(type(arrayOfUsersSignIn)) # confirming it's a list
     for i in arrayOfUsersSignIn:
         print('User: ' + i["Username"] + ', Last sign in: ' +
-                str(i["LastSignIn"].strftime("%A %d %B, %y")))
+                str(i["LastSignIn"].strftime("%A %d %B, %y")) + ', TimeStamp: ' + str(now.strftime('%s')))
         ddb_table.put_item(
             Item={
                 'username': i["Username"],
                 'createDate': str(i["CreateDate"].strftime("%A %d %B, %y")),
-                'lastSignIn': str(i["LastSignIn"].strftime("%A %d %B, %y"))
+                'lastSignIn': str(i["LastSignIn"].strftime("%A %d %B, %y")),
+                'ttl': int(now.strftime('%s')),
             }
         )
     print('\n')

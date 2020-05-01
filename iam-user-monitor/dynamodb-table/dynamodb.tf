@@ -9,4 +9,6 @@ module "dynamodb-table" {
   attribute-type = "${var.attribute-type}"
   streams        = "${var.streams}"
   stream-view    = "${var.stream-view}"
+  ttl-enabled    = "${var.ttl-enabled}"
+  ttl-attribute  = "${var.ttl-attribute}"
 }

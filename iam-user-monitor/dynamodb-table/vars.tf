@@ -36,3 +36,13 @@ variable "stream-view" {
   type    = "string"
   default = "NEW_AND_OLD_IMAGES"
 }
+
+variable "ttl-enabled" {
+  type    = "string"
+  default = "true"
+}
+
+variable "ttl-attribute" {
+  type    = "string"
+  default = "ttl"
+}
