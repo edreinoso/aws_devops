@@ -1,0 +1,9 @@
+DiskSpaceAvailable [/ebs]: 29.923957824707 (Gigabytes)
+No credential methods are specified. Trying default IAM role.
+Using IAM role <EC2_Role>
+Endpoint: https://monitoring.us-east-1.amazonaws.com
+Payload: {"MetricData":[{"Timestamp":1589337627,"Dimensions":[{"Value":"/dev/xvdb","Name":"Filesystem"},{"Value":"i-01e451440e8b746d7","Name":"InstanceId"},{"Value":"/ebs","Name":"MountPath"}],"Value":29.923957824707,"Unit":"Gigabytes","MetricName":"DiskSpaceAvailable"}],"Namespace":"System/Linux","__type":"com.amazonaws.cloudwatch.v2010_08_01#PutMetricDataInput"}
+Received HTTP status 200 on attempt 1
+
+
+Successfully reported metrics to CloudWatch. Reference Id: d507f46d-322d-4952-9cfa-09c03acd9fb8

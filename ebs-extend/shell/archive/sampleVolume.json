@@ -1,0 +1,34 @@
+{
+  "Volumes": [
+    {
+      "AvailabilityZone": "us-east-1a",
+      "Tags": [
+        {
+          "Value": "vol-rescue-system",
+          "Key": "Name"
+        }
+      ],
+      "VolumeId": "vol-00112233"
+    },
+    {
+      "AvailabilityZone": "us-east-1a",
+      "Tags": [
+        {
+          "Value": "vol-rescue-swap",
+          "Key": "Name"
+        }
+      ],
+      "VolumeId": "vol-00112234"
+    },
+    {
+      "AvailabilityZone": "us-east-1a",
+      "Tags": [
+        {
+          "Value": "vol-rescue-storage",
+          "Key": "Name"
+        }
+      ],
+      "VolumeId": "vol-00112235"
+    }
+  ]
+}
