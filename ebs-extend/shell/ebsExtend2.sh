@@ -20,7 +20,7 @@ gt=$(echo "$result > $threshold" | bc -q )
 # return 1 if true ; O if not
 if [ $gt = 1 ]
 then
-   echo "call lambda"
+   echo "call lambda on "
 else
    echo "do nothing"
 fi
