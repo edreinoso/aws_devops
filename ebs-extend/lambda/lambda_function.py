@@ -1,9 +1,10 @@
 import boto3
 import json
 
+
 def lambda_handler(event, context):
     modifiedSize = 5  # variable to modify volume
-    documentName = "helloworld"
+    documentName = event["document"]
     client = boto3.client('ec2')
 
     for volumeIterator in event["ebsInfo"]:
@@ -14,7 +15,7 @@ def lambda_handler(event, context):
         #   # VolumeType='standard'|'io1'|'gp2'|'sc1'|'st1',
         #   # Iops=123
         # )
-
+        path = volumeIterator["path"]
         ssm = boto3.client('ssm')
         response = ssm.send_command(
             InstanceIds=[volumeIterator["instanceId"]],
@@ -22,13 +23,11 @@ def lambda_handler(event, context):
             DocumentVersion='$LATEST',
             Comment='testing ssm.send_command from labda',
             # Parameters should be the drive in which volume is mounted
-            # Parameters={
-            #   'driveletter': [
-            #       'D',
-            #   ]
-            # },
+            Parameters={
+                'VolumePath': [volumeIterator["path"]]
+            },
         )
-    # return response['Command']['CommandId']
+    return (path)
     # return {
     #     'statusCode': 200,
     #     'body': json.dumps(response)

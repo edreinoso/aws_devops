@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "2.2",
+  "description": "Command Document Example JSON Template",
+  "parameters": {
+    "VolumePath": {
+      "type": "String",
+      "description": "Volume path that will be extended",
+      "default": ""
+    }
+  },
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "example",
+      "inputs": {
+        "runCommand": [
+          "#!/bin/bash",
+          "volumePath='{{VolumePath}}'",
+          "typeOfVolume=`cat /etc/fstab | grep /$volumePath |  cut -d \" \" -f 5`",
+          "echo $typeOfVolume >> /home/ec2-user/volumeType.txt",
+          "if [ $typeOfVolume == \"xfs\" ]; then",
+          "   echo Hello >> /home/ec2-user/volumeType.txt",
+          "else",
+          "   echo World >> /home/ec2-user/volumeType.txt",
+          "fi",
+          "echo >> /home/ec2-user/volumeType.txt"
+        ]
+      }
+    }
+  ]
+}
