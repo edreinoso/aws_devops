@@ -1,0 +1,14 @@
+sudo fio --directory=/test \
+  --name hello_world_1 \
+  --direct=0 \
+  --rw=randwrite \
+  --bs=4k \
+  --size=512M \
+  --numjobs=6 \
+  --time_based \
+  --runtime=180 \
+  --group_reporting
+
+~/aws-scripts-mon/mon-put-instance-data.pl --disk-path=/test --disk-space-util --verbose
+~/aws-scripts-mon/mon-put-instance-data.pl --disk-path=/test --disk-space-used --verbose
+~/aws-scripts-mon/mon-put-instance-data.pl --disk-path=/test --disk-space-avail --verbose

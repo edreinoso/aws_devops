@@ -1,0 +1,22 @@
+aws lambda invoke \
+    --function-name EBS_Extend \
+    --payload '{"ebsInfo":[{"volumeId":"vol-019a2f9740a74a7a9","ebsSize":20}]}' \
+    response.json
+
+
+aws lambda invoke --function-name EBS_Extend --payload '{"ebsInfo":[{"instanceId":"i-01e451440e8b746d7","volumeId":"vol-019a2f9740a74a7a9","ebsSize":"20"}]}' response.json
+aws lambda invoke --function-name EBS_Extend --payload '{"document":"helloworld","ebsInfo":[{"instanceId":"i-01e451440e8b746d7","volumeId":"vol-019a2f9740a74a7a9","ebsSize":"20","path":"test"}]}' response.json
+
+aws ssm create-document --content file://path/to/file/documentContent.json \ --name "ExampleDocument" --document-type "Command" --tags "Key=TaskType,Value=MyConfigurationUpdate"
+
+aws ssm update-document --name "RunShellScript" --content "file://script.json" --document-version '$LATEST'
+
+lsblk | grep data | sed 's|.*/||' | cut -d " " -f 1
+
+echo "This is 02G05 a test string 20-Jul-2012" | sed -n 's/.*\([0-9][0-9]*G[0-9][0-9]*\).*/\1/p'
+echo "This is 25G a test string 20-Jul-2012" | sed -n 's/.*\([0-9][0-9]*G\).*/\1/p'
+echo "This is 25G a test string 20-Jul-2012" | sed -n 's/\([0-9][0-9]*G\)/\1/p'
+echo "This is 25G a test string 20-Jul-2012" | egrep -o '[0-9]+G' | cut -d "G" -f 1
+
+
+echo "xvdm    202:192  0  25G  0 disk /data" | egrep -o '[0-9]+G'
