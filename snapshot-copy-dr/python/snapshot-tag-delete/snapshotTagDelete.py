@@ -16,6 +16,10 @@ def lambda_handler(event, context):
                 'Name': 'owner-id',
                 'Values': ['130193131803']
             },
+            {
+                'Name': 'tag:Automation',
+                'Values': ['ebs-extend']
+            },
         ],
     )
     for snapshot in client['Snapshots']:
