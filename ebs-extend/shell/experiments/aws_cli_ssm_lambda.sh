@@ -27,5 +27,5 @@ aws ssm update-document-default-version \
 
 aws ssm send-command \
     --document-name "extend_ebs_volume" \
-    --parameters commands=["/data"] \
-    --targets "Key=instanceids,Values=i-04a89980401b186bc"
+    --parameters {"VolumePath"=["app"], "MountPoint"=["xvdb"], "MountNumber"=["empty"]} \
+    --targets "Key=instanceids,Values=i-06d9d0fb34b6d65c0"
