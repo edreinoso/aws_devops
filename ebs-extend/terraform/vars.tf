@@ -2,10 +2,32 @@ variable "AWS_REGIONS" {
   default = "us-east-1"
 }
 
+# TAGS
+variable "ec2-name" {
+  type    = "string"
+  default = "ebs-extend"
+}
+
+variable "template" {
+  type    = "string"
+  default = "sandbox"
+}
+variable "application" {
+  type    = "string"
+  default = "ebs-extend"
+}
+variable "purpose" {
+  type    = "string"
+  default = "devops"
+}
+variable "created-on" {
+  type    = "string"
+  default = "May 30th 2020"
+}
 
 variable "custom-ami" {
   type    = "string"
-  default = "ebs-extend-may-30"
+  default = "ebs-extend-june-08"
 }
 
 variable "type" {
@@ -38,25 +60,7 @@ variable "volume-size" {
   default = "10,15,30"
 }
 
-# TAGS
-variable "ec2-name" {
+variable "role" {
   type    = "string"
-  default = "ebs-extend"
-}
-
-variable "template" {
-  type    = "string"
-  default = "sandbox"
-}
-variable "application" {
-  type = "string"
-  default = "ebs-extend"
-}
-variable "purpose" {
-  type = "string"
-  default = "devops"
-}
-variable "created-on" {
-  type = "string"
-  default = "May 30th 2020"
+  default = "LambdaEC2FullAccess"
 }

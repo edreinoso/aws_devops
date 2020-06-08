@@ -9,7 +9,7 @@ for k in $(jq '.messages | keys | .[]' json_file.json); do
     # Checking variables
     echo "$volumeId" "$path"
 
-    ~/aws-scripts-mon/mon-put-instance-data.pl --disk-path=/"$path" --disk-space-util --verbose > ./ebsavailable.txt
+    ~/aws-scripts-mon/mon-put-instance-data.pl --disk-path="$path" --disk-space-util --verbose > ./ebsavailable.txt
     head -1 ./ebsavailable.txt > ./shortEbsUsed.txt
 
     # getting the number value
@@ -23,14 +23,14 @@ for k in $(jq '.messages | keys | .[]' json_file.json); do
     if [ $gt = 1 ]
     then
         echo "$timestamp call lambda on $path with $volumeId and $size" >> ~/pass80percent.txt
-        echo
+        echo >> ~/pass80percent.txt
         #aws lambda invoke --function-name EBS_Extend --payload '{"ebsInfo":[{"volumeId":"'$volumeId'","ebsSize":"'$size'"}]}' response.json
+         aws lambda invoke --function-name EBS_Extend --payload '{"document": "extend_ebs_volume","ebsInfo":[{"instanceId":"'$instanceId'", "volumeId":"'$volumeId'","ebsSize":"'$size'","path":"'$path'","mountPoint":"'$mountPoint'","mountNumber":"'$mountNumber'"}]}' response.json
         ~/ebsExtend1.sh
     else
-        echo "$timestamp do nothing on $path with $volumeId and $size"
-        #echo "$timestamp do nothing on $path with $volumeId and $size" >> ~/didNotPass80percent.txt
+        echo "$timestamp do nothing on $path with $volumeId and $size" >> ~/didNotPass80percent.txt
         #echo >> ~/didNotPass80percent.txt
     fi
     #echo >> ~/didNotPass80percent.txt
 done
-#echo >> ~/didNotPass80percent.txt
+echo >> ~/didNotPass80percent.txt

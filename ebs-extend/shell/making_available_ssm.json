@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.2",
+  "description": "Command Document Example JSON Template",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "example",
+      "inputs": {
+        "runCommand": [
+          "#!/bin/bash",
+          "sh /home/ec2-user/ebsExtend1.sh",
+          "mkfs -t xfs /dev/xvdf",
+          "mkdir /data",
+          "mount /dev/xvdf /data",
+          "cp /etc/fstab /etc/fstab.orig",
+          "echo UUID=0118266c-642d-43ff-842f-2c89f6085c61  /volume  xfs  defaults,nofail  0  2 >> /etc/fstab"
+        ]
+      }
+    }
+  ]
+}

@@ -1,5 +1,0 @@
-#
-UUID=55da5202-8008-43e8-8ade-2572319d9185     /           xfs    defaults,noatime  1   1
-UUID=f9146d05-718a-4b82-9684-4331de3a9f4a  /ebs  xfs  defaults,nofail  0  2
-UUID=a9d18db7-4618-475c-8678-3b4ea79d595e  /app  xfs  defaults,nofail  0  2
-UUID=08971609-db9a-4001-ad05-a9859415e43f  /data  xfs  defaults,nofail  0  2

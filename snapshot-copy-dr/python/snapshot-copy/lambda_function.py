@@ -1,15 +1,17 @@
 import boto3
 
+# two regions are required for this function to execute
+# a source region would be where the snapshot is being
+# copied from.
+# a destination region would be where the snapshot is
+# going to be copied to
 source_region = 'us-east-1'
 destination_region = 'us-east-2'
 
-# Connect to EC2 in Source region
+# connect to EC2 in source region
 source_client = boto3.client('ec2', region_name=source_region)
-# Connect to EC2 in Destination region
+# connect to EC2 in destination region
 destination_client = boto3.client('ec2', region_name=destination_region)
-
-# These keys are from north virginia region and they represents aws_ebs and global_kms
-# kms_key = '45f02b69-219a-4fad-b6e3-44056c46ca1c'
 
 
 def lambda_handler(event, context):
@@ -19,10 +21,15 @@ def lambda_handler(event, context):
     i = 1
     client = source_client.describe_snapshots(
         Filters=[
+            # REQUIRED as with the previous function
+            # this function will also need to have the
+            # the account ID
             {
                 'Name': 'owner-id',
                 'Values': ['130193131803']
             },
+            # this filter will only include the functions
+            # that have the DR:false tag
             {
                 'Name': 'tag:DR',
                 'Values': ['false']
@@ -31,41 +38,34 @@ def lambda_handler(event, context):
     )
 
     for snapshot in client['Snapshots']:
+        # saving these in variables for later usage
         snapshot_id = snapshot['SnapshotId']
         snapshot_name = snapshot['Description']
-        print('Snap_id primary region: ' + snapshot_id)
-        print(str(i))
         if i > 5:  # there is a limit of 5 to be transferred to a diff region
-            # print('You need to stop RIGHT NOW!')
             return ("Maximum amount of snapshots have been sent")
-            # exit(0)
-        else:
+        else:  # if the limit has not been reached, then it would copy the snapshots
             for tags in snapshot['Tags']:
-                snapshot_tag_name = tags['Value']
-                # print('Key: ' + tags['Key'] + '\t' +
-                #       ' Value: ' + snapshot_tag_name)
                 if (tags['Key'] == 'Name'):
+                    snapshot_tag_name = tags['Value']
                     # call the snapshot copy, it will return the
                     # new snapshot_id that will be used in tagging
                     new_snapshot_id = copy_snapshot(
                         snapshot_id, snapshot_name, key_name_tag, snapshot_tag_name)
 
-                    # change DR tag to true
+                    # change DR tag to true value on the source snapshot
                     create_tag(source_client, snapshot_id,
                                'DR', 'true')
 
-                    # create a tag with name of previous snapshot
+                    # create a Name tag in the destination snapshot
                     create_tag(destination_client, new_snapshot_id,
                                key_name_tag, snapshot_tag_name)
-        i += 1
-        print('--------' + '\n')
+        i += 1  # move to the next snapshot
 
-# This function would copy the snapshots to another region
+# function that will handle the snapshot copy
+# it will take a snapshot_id, snapshot_name
 
 
-def copy_snapshot(snapshot_id, snapshot_name, key_name_tag, snapshot_tag_name):
-    # print("Started copying snapshot_id: " + snapshot_id + "from: " + source_region + ", to: " + destination_region)
-
+def copy_snapshot(snapshot_id, snapshot_name):
     # Copy the snapshot
     response = destination_client.copy_snapshot(
         SourceSnapshotId=snapshot_id,
@@ -73,14 +73,11 @@ def copy_snapshot(snapshot_id, snapshot_name, key_name_tag, snapshot_tag_name):
         Description=snapshot_name,
     )
 
-    # print('res: ' + str(response))
     new_snapshot_id = response['SnapshotId']
-    # encrypted = response['Encrypted']
-    # print('New snapshot ID: ' + new_snapshot_id)
-    # print('New snapshot ID: ' + new_snapshot_id + '. Encrypted: ' + encrypted)
     return response['SnapshotId']
 
-# This function will create a tag to snaphots
+# function to create the snapshot
+# it requires the snapshot_id, the key and value and the client
 
 
 def create_tag(client, snapshot_id, key, value):

@@ -1,25 +1,40 @@
 import boto3
-from createTag import createTag # would call an extra class that is in chargge of creating tags.
+client = boto3.client('ec2')
 
-region='us-east-2'
-ec2 = boto3.client('ec2', region_name=region)
 
 def lambda_handler(event, context):
     tags_name = 'Tags'
-    tag_volume = createTag()
-    client = ec2.describe_volumes()
-    
-    condition = 0
-    
-    for x in client['Volumes']:
-        if tags_name in x:
-            
-            for y in x['Tags']:
-                if (y['Key'] == 'EBS-DLM'):
-                    break
-                if condition >= len(x['Tags'])-1:
-                    tag_volume.create_tag(ec2, x['VolumeId'], 'EBS-DLM', 'true')
-                condition += 1
-        else:
-            tag_volume.create_tag(ec2, x['VolumeId'], 'EBS-DLM', 'true')
-        condition = 0 # resetting condition
+    ec2 = client.describe_instances()
+
+    for aws in ec2['Reservations']:
+        for instance in aws['Instances']:
+            if tags_name in instance:
+                for tags in instance["Tags"]:
+                    if (tags['Key'] == 'Name'):
+                        instanceNameTagValue = tags['Value']
+                        # print('instance name tag: ' + instanceNameTagValue)
+
+            volume = client.describe_volumes(
+                Filters=[
+                    {
+                        'Name': 'attachment.instance-id',
+                        'Values': [instance["InstanceId"]]
+                    }
+                ]
+            )
+
+            for ebs in volume["Volumes"]:
+                create_tag(ebs["VolumeId"], instanceNameTagValue)
+        # print('\n')
+
+
+def create_tag(volume_id, value):
+    client.create_tags(
+        Resources=[volume_id],
+        Tags=[
+            {
+                'Key': 'Name',
+                'Value': value
+            },
+        ]
+    )
