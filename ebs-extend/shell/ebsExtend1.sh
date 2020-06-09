@@ -20,15 +20,12 @@ for k in $(jq '.Volumes | keys | .[]' volume.json); do
     #echo "$values"
     mount_point=`echo $device | sed 's|.*s|xv|' | cut -d " " -f 1`
     directory=`df -h | grep $mount_point | rev | cut -d ' ' -f 1 | rev`
-    #directory=`lsblk | grep $mount_point | sed 's|.*/||' | cut -d " " -f 1`
-    #volumeSize=`lsblk | grep $mount_point | egrep -o '[0-9]+G' | cut -d "G" -f 1`
     echo "$volumeId" "$directory" "$volumeSize" "$instanceId"
-    #echo "$volumeId" "$directory" "$instanceId"
 
     # only populate an object if the directory if directory has value
     if [ "$directory" != "/" ]; then
-      #object=$(jq --arg path "$directory" --arg instanceId "$instanceId" --arg vol "$volumeId" '.messages += [{"instanceId": $instanceId, "path": $path, "volumeId": $vol}]' json_file.json)
       object=$(jq --arg path "$directory" --arg instanceId "$instanceId" --arg vol "$volumeId" --arg size "$volumeSize" '.messages += [{"instanceId": $instanceId, "path": $path, "volumeId": $vol, "volumeSize": $size}]' json_file.json)
       printf "$object" > json_file.json
     fi
 done
+  

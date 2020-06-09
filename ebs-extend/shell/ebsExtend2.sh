@@ -4,6 +4,8 @@ for k in $(jq '.messages | keys | .[]' json_file.json); do
     path=$(jq -r '.path' <<< "$value");
     volumeId=$(jq -r '.volumeId' <<< "$value");
     size=$(jq -r '.volumeSize' <<< "$value");
+    mountPoint=$(jq -r '.mountPoint' <<< "$value");
+    mountNumber=$(jq -r '.mountPoint' <<< "$value");
     timestamp=`date +%Y-%m-%d_%H:%M:%S`
 
     # Checking variables
@@ -24,8 +26,11 @@ for k in $(jq '.messages | keys | .[]' json_file.json); do
     then
         echo "$timestamp call lambda on $path with $volumeId and $size" >> ~/pass80percent.txt
         echo >> ~/pass80percent.txt
-        #aws lambda invoke --function-name EBS_Extend --payload '{"ebsInfo":[{"volumeId":"'$volumeId'","ebsSize":"'$size'"}]}' response.json
-         aws lambda invoke --function-name EBS_Extend --payload '{"document": "extend_ebs_volume","ebsInfo":[{"instanceId":"'$instanceId'", "volumeId":"'$volumeId'","ebsSize":"'$size'","path":"'$path'","mountPoint":"'$mountPoint'","mountNumber":"'$mountNumber'"}]}' response.json
+        if [[ $mountNumber == " " ]]; then
+            mountNumber="empty"
+        fi
+        aws lambda invoke --function-name EBS_Extend --payload '{"document": "extend_ebs_volume","ebsInfo":[{"instanceId":"'$instanceId'", "volumeId":"'$volumeId'","ebsSize":"'$size'","path":"'$path'","mountPoint":"'$mountPoint'","mountNumber":"'$mountNumber'"}]}' response.json
+        sleep 10
         ~/ebsExtend1.sh
     else
         echo "$timestamp do nothing on $path with $volumeId and $size" >> ~/didNotPass80percent.txt

@@ -1,1 +1,0 @@
-DiskSpaceAvailable [/ebs]: 29.923957824707 (Gigabytes)

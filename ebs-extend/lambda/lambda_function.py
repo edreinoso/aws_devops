@@ -15,7 +15,7 @@ def lambda_handler(event, context):
           VolumeId=volumeIterator["volumeId"],
           Size=int(volumeIterator["ebsSize"])+modifiedSize,
         )
-        time.sleep(10)
+        # time.sleep(10)
         path = volumeIterator["path"]
         ssm = boto3.client('ssm')
         response = ssm.send_command(

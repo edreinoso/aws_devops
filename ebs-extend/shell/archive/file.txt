@@ -1,1 +1,0 @@
-vol-070fb81e0d7398a39 /dev/xvda
