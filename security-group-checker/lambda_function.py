@@ -44,7 +44,6 @@ def lambda_handler(event, context):
         groupId = sg['GroupId']
         groupName = sg['GroupName']
 
-        # print(groupId, groupName)
         for ip in sg['IpPermissions']:
             # there has to be an exception for security groups that don't have ports.
             if exFromPort in ip:

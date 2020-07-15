@@ -4,24 +4,34 @@ from start import start
 
 
 def lambda_handler(event, context):
-    print ('\n')
+    print('\n')
+    print(event["value"] + "\n" + event["key"])
+    # nametag = "tag:"+event["key"]
     client = boto3.client('ec2')
-    areThereEC2Tags = 'Tags'
+    ec2 = client.describe_instances(
+        # Having a filter EC2 instances that contain a certain tag
+        Filters=[
+            {
+                'Name': 'tag:'+event["key"],
+                # 'Name': nametag,  # how can I accomplish index variables?
+                'Values': [event["value"]]
+            }
+        ]
+    )
     stopInstance = stop()
     startInstance = start()
 
     for reservation in ec2["Reservations"]:
         for instance in reservation["Instances"]:
             print('instance id: ' + instance['InstanceId'])
-            if areThereEC2Tags in instance:
-                for tags in instance['Tags']:
-                    if (tags['Key'] == 'Name'):
-                        if ('dev' in tags['Value']):
-                            print(tags['Value'])
-                            if (event['action'] == 'start'):
-                                print('stopping instance:' + instance)
-                                stopInstance.stop_ec2(instance, client)
-                            elif (event['action'] == 'stop'):
-                                print('starting instance:' + instance)
-                                startInstance.start_ec2(instance, client)
-    print ('\n')
+            # if (event['action'] == 'stop'):
+            #     print('stopping instance:' +
+            #           instance['InstanceId'])
+            #     stopInstance.stop_ec2(
+            #         instance['InstanceId'], client)
+            # elif (event['action'] == 'start'):
+            #     print('starting instance:' +
+            #           instance['InstanceId'])
+            #     startInstance.start_ec2(
+            #         instance['InstanceId'], client)
+    print('\n')

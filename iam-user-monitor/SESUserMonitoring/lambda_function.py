@@ -74,10 +74,10 @@ def bubble_sort(nums):
                         swapped = True
 
 
-# def lambda_handler(event, context):
-# 1st part: Getting data from DDB
-part1DDB()
-result = json.dumps(userdata)
-print(result)
-# 2nd part: Create SES client
-part2SES(result)
+def lambda_handler(event, context):
+    # 1st part: Getting data from DDB
+    part1DDB()
+    result = json.dumps(userdata)
+    print(result)
+    # 2nd part: Create SES client
+    part2SES(result)
