@@ -17,10 +17,10 @@ data "terraform_remote_state" "vpc" {
 }
 
 module "ec2" {
-  source             = "/Users/elchoco/aws/terraform_infrastructure_as_code//modules/compute/ec2"
-  ami         = "${var.ami}"
-  instance-type      = "${var.instance-type}"
-  subnet-ids         = "${element(
+  source        = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
+  ami           = "${var.ami}"
+  instance-type = "${var.instance-type}"
+  subnet-ids = "${element(
     element(data.terraform_remote_state.vpc.outputs.pub-subnet-2-id, 1),
     1,
   )}"
@@ -31,7 +31,7 @@ module "ec2" {
   sourceCheck        = "${var.source-check["enable"]}"
   key-name           = "${var.key-name["public"]}"
   security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.public-sg-id)}"
-  created-on = "${var.creation_date}"
-  application = "${var.application}"
-  purpose = "${var.purpose}"
+  created-on         = "${var.creation_date}"
+  application        = "${var.application}"
+  purpose            = "${var.purpose}"
 }
