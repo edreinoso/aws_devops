@@ -10,4 +10,6 @@ module "function" {
   application   = "${var.application}"
   purpose       = "${var.purpose}"
   created-on    = "${var.creation_date}"
+  timeout       = "${var.timeout}"
+  memory-size   = "${var.memory-size}"
 }

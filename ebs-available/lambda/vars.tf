@@ -52,3 +52,13 @@ variable "creation_date" {
   type    = "string"
   default = "July_18_2020"
 }
+
+variable "timeout" {
+  type    = "string"
+  default = "90"
+}
+
+variable "memory-size" {
+  type    = "string"
+  default = "128"
+}

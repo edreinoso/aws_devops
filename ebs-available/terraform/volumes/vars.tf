@@ -4,12 +4,12 @@ variable "AWS_REGIONS" {
 
 variable "size" {
   type    = "string"
-  default = "25,20,10,15"
+  default = "25,20,10"
 }
 
 variable "name" {
   type    = "string"
-  default = "ebs-volume-available-test-1,ebs-volume-available-test-2,ebs-volume-available-test-3,ebs-volume-available-test-4"
+  default = "ebs-volume-available-test-1,ebs-volume-available-test-2,ebs-volume-available-test-3"
 }
 
 variable "template" {
@@ -34,7 +34,7 @@ variable "creation_date" {
 
 variable "device-name" {
   type    = "list"
-  default = ["sdl","sdk","sdm","sdn"]
+  default = ["sdl","sdk","sdm"]
 }
 
 variable "encrypted" {
