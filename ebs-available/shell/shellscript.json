@@ -20,6 +20,7 @@
                     "logic=true",
                     "value=\"data\"",
                     "n=0",
+                    "echo whoami >> /home/ec2-user/test.txt",
                     "echo $device >> /home/ec2-user/test.txt",
                     "file -s $device",  
                     "mkfs -t xfs $device >> /home/ec2-user/test.txt",
@@ -35,14 +36,13 @@
                     "        value=\"$value$n\"",
                     "    fi",
                     "done",
-                    "echo $device /$value",
-                    "mount $device /$value >> /home/ec2-user/test.txt",
+                    "echo $device /$value >> /home/ec2-user/test.txt",
+                    "mount $device /$value",
                     "cp /etc/fstab /etc/fstab.orig",
                     "blkid=`blkid -o value -s UUID $device`",
-                    "UUID=$blkid  /$value  xfs  defaults,nofail  0  2",
-                    "cat $UUID >> fstab",
-                    "umount /$value",
-                    "mount -a"
+                    "echo $blkid >> /home/ec2-user/test.txt",
+                    "UUID=`echo $blkid     /$value           xfs    defaults,nofail  0  2`",
+                    "echo $UUID >> /etc/fstab"
                 ]
             }
         }

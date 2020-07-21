@@ -1,4 +1,4 @@
-alias deployinstances='cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/ec2  && terraform init && terraform workspace select dev && terraform apply -auto-approve  && cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/volumes  && terraform init && terraform workspace select dev && terraform apply -auto-approve'
+alias deployinstances='cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/ec2 && terraform apply -auto-approve  && cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/volumes  && terraform apply -auto-approve'
 
 alias destroyinstances='cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/ec2 && terraform destroy -auto-approve && cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/volumes && terraform destroy -auto-approve'
 

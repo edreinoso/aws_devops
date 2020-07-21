@@ -1,26 +1,21 @@
-logic=false
+#!/bin/bash
+#initializing important variables
+logic=true
 value="data"
 n=0
 
-# testing code
-# ((n+=1))
-# echo $n
-
-# value="$value$n"
-# logic=true
-# echo $value $logic
-
-while [ "$logic" ]
+while [ "$logic" != "false" ]
 do
     x=`ls / | grep $value`
-    # mkdir 
+    # mkdir
     if [[ -z  $x ]]; then
-        echo "Hello World"
         sudo mkdir /$value
-        logic=true
+        logic=false
     else
         ((n+=1)) #sum operations
         value="data"
         value="$value$n" # assigning new value
     fi
 done
+
+echo "Hello World, something after?"
