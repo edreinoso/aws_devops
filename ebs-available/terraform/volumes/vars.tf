@@ -2,16 +2,6 @@ variable "AWS_REGIONS" {
   default = "us-east-1"
 }
 
-variable "size" {
-  type    = "string"
-  default = "25,20,10"
-}
-
-variable "name" {
-  type    = "string"
-  default = "ebs-volume-available-test-1,ebs-volume-available-test-2,ebs-volume-available-test-3"
-}
-
 variable "template" {
   type    = "string"
   default = "aws_automation"
@@ -32,12 +22,54 @@ variable "creation_date" {
   default = "July_18_2020"
 }
 
-variable "device-name" {
-  type    = "list"
-  default = ["sdl","sdk","sdm"]
-}
-
 variable "encrypted" {
   type    = "string"
   default = "false"
 }
+
+# Changing Variables
+
+variable "size" {
+  type    = "string"
+  default = "25"
+}
+
+variable "name" {
+  type    = "string"
+  default = "ebs-volume-available-test-1"
+}
+
+variable "device-name" {
+  type    = "list"
+  default = ["sdl"]
+}
+
+# variable "size" {
+#   type    = "string"
+#   default = "25,20"
+# }
+
+# variable "name" {
+#   type    = "string"
+#   default = "ebs-volume-available-test-1,ebs-volume-available-test-2"
+# }
+
+# variable "device-name" {
+#   type    = "list"
+#   default = ["sdl","sdk"]
+# }
+
+# variable "size" {
+#   type    = "string"
+#   default = "25,20,10"
+# }
+
+# variable "name" {
+#   type    = "string"
+#   default = "ebs-volume-available-test-1,ebs-volume-available-test-2,ebs-volume-available-test-3"
+# }
+
+# variable "device-name" {
+#   type    = "list"
+#   default = ["sdl","sdk","sdp"]
+# }

@@ -1,13 +1,37 @@
-#variables
-#/dev/xvdX # could be got from device in lambda python
-#directory also has to be dynamic in a sense. /data 
+#!/bin/bash
+#initializing important variables
+device={{device}}
+logic=true
+value="data"
+n=0
 
-sudo file -s /dev/xvda1
-sudo mkfs -t xfs /dev/xvdf
-sudo mkdir /data
-sudo mount /dev/xvdf /data
-sudo cp /etc/fstab /etc/fstab.orig
-sudo blkid
-UUID=aebf131c-6957-451e-8d34-ec978d9581ae  /data  xfs  defaults,nofail  0  2
-sudo umount /data
-sudo mount -a
+file -s $device # Rajesh has this part of the script. There should be an if statement here
+mkfs -t xfs $device
+
+while [ "$logic" != "false" ]
+do
+    x=`ls / | grep $value`
+    # mkdir
+    if [[ -z  $x ]]; then
+        mkdir /$value
+        logic=false
+    else
+        ((n+=1)) #sum operations
+        value="data"
+        value="$value$n" # assigning new value
+    fi
+done
+
+mount $device /$value
+cp /etc/fstab /etc/fstab.orig
+
+# there is another piece of logic to be done here
+# have to strip the shit out of this
+blkid=`blkid -o value -s UUID $device` # Rajesh also has this part of the script
+# would XFS have to be constant or a variable?
+# would the number 2 have to auto increase?
+UUID=`$blkid  /$value  xfs  defaults,nofail  0  2`
+cat $UUID >> fstab
+
+umount /$value
+mount -a

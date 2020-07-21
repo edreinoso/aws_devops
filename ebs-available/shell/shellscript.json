@@ -1,0 +1,54 @@
+{
+    "schemaVersion": "2.2",
+    "description": "Command Document Example JSON Template",
+    "parameters": {
+        "Device": {
+            "type": "String",
+            "description": "Device for the specific volume which it is mounted on",
+            "default": ""
+        }
+    },
+    "mainSteps": [
+        {
+            "action": "aws:runShellScript",
+            "name": "example",
+            "inputs": {
+                "runCommand": [
+                    "#!/bin/bash",
+                    "#initializing important variables",
+                    "device={{Device}}",
+                    "logic=true",
+                    "value=\"data\"",
+                    "n=0",
+                    "echo $device >> /home/ec2-user/test.txt",
+                    "file -s $device",  
+                    "mkfs -t xfs $device >> /home/ec2-user/test.txt",
+                    "while [ $logic != \"false\" ]",
+                    "do",
+                    "    x=`ls / | grep $value`",
+                    "    if [[ -z  $x ]]; then",
+                    "        mkdir /$value",
+                    "        logic=false",
+                    "    else",
+                    "        ((n+=1)) #sum operations",
+                    "        value=\"data\"",
+                    "        value=\"$value$n\"",
+                    "    fi",
+                    "done",
+                    "echo $device /$value",
+                    "mount $device /$value >> /home/ec2-user/test.txt",
+                    "cp /etc/fstab /etc/fstab.orig",
+                    "blkid=`blkid -o value -s UUID $device`",
+                    "UUID=$blkid  /$value  xfs  defaults,nofail  0  2",
+                    "cat $UUID >> fstab",
+                    "umount /$value",
+                    "mount -a"
+                ]
+            }
+        }
+    ]
+}
+
+
+
+

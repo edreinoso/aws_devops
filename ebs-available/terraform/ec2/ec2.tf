@@ -2,7 +2,7 @@ data "terraform_remote_state" "security" {
   backend = "s3"
   config = {
     bucket = "terraform-state-er"
-    key    = "env:/dev/standard-1/security-terraform.tfstate"
+    key    = "env:/dev/aws_devops/security.tfstate"
     region = "us-east-1"
   }
 }
@@ -11,7 +11,7 @@ data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket = "terraform-state-er"
-    key    = "env:/dev/standard-1/network-terraform.tfstate"
+    key    = "env:/dev/aws_devops/network.tfstate"
     region = "us-east-1"
   }
 }
@@ -30,7 +30,7 @@ module "ec2" {
   instance-role      = "${var.instance-role}"
   sourceCheck        = "${var.source-check["enable"]}"
   key-name           = "${var.key-name["public"]}"
-  security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.public-sg-id)}"
+  security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
   created-on         = "${var.creation_date}"
   application        = "${var.application}"
   purpose            = "${var.purpose}"

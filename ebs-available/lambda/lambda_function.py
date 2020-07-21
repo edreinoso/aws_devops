@@ -6,8 +6,10 @@ import time
 def lambda_handler(event, context):
     # sleep()
     client = boto3.client('ec2')
+    documentName = "ebs_available"  # need to create a new document in SSM
     # TODO implement
-    world = ""
+    # world = ""
+    # part of the function that would come from creating a volume
     for elements in event['resources']:
         world = str(elements)
         print(world)
@@ -15,6 +17,8 @@ def lambda_handler(event, context):
         print(cut_word)
         # there should be a sleep function here
         time.sleep(40)
+    # cut_word = "vol-09070abe737df7181"
+    # cut_word = "vol-0d162f30126774dee"
         response = client.describe_volumes(
             VolumeIds=[
                 cut_word,
@@ -26,19 +30,21 @@ def lambda_handler(event, context):
             for bar in foo['Attachments']:
                 # print(type(bar))
                 print(bar['InstanceId'])
-                # ssm = boto3.client('ssm')
-                # response = ssm.send_command(
-                #     InstanceIds=[bar['InstanceId']],
-                #     DocumentName=documentName,
-                #     DocumentVersion='$LATEST',
-                #     Comment='testing ssm.send_command from lambda',
-                #     # Parameters should be the drive in which volume is mounted
-                #     Parameters={
-                #         'VolumePath': [volumeIterator["path"]],
-                #         'MountPoint': [volumeIterator["mountPoint"]],
-                #         'MountNumber': [volumeIterator["mountNumber"]],
-                #     },
-                # )
+                # need to change device from /dev/sdl to /dev/xvdl
+                bar_word = bar['Device'][len(bar['Device'])-1:len(bar['Device'])]
+                device = "/dev/xvd"+bar_word
+                print(device)
+                ssm = boto3.client('ssm')
+                response = ssm.send_command(
+                    InstanceIds=[bar['InstanceId']],
+                    DocumentName=documentName,
+                    DocumentVersion='$LATEST',
+                    Comment='testing ssm.send_command from lambda',
+                    # Parameters should be the drive in which volume is mounted
+                    Parameters={
+                        'Device': [device],
+                    },
+                )
         # print(type(world))
     # print(type(event['resources']))
     # print(type(event))
