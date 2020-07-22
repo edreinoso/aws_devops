@@ -34,4 +34,15 @@ module "ec2" {
   created-on         = "${var.creation_date}"
   application        = "${var.application}"
   purpose            = "${var.purpose}"
+
+  ebs_block_device = [
+    {
+      device_name = "/dev/sdl"
+      volume_size = 5
+    },
+    {
+      device_name = "/dev/sdk"
+      volume_size = 10
+    },
+  ]
 }

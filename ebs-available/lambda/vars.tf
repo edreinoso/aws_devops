@@ -23,11 +23,6 @@ variable "role" {
   default = "arn:aws:iam::130193131803:role/LambdaEC2FullAccess"
 }
 
-variable "roleName" {
-  type    = "string"
-  default = "LambdaEC2FullAccess"
-}
-
 variable "runtime" {
   type    = "string"
   default = "python2.7"

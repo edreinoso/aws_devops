@@ -72,3 +72,9 @@ variable "instance-role" {
     type = "string"
     default = "EC2_Role"
 }
+
+
+variable "roleName" {
+  type    = "string"
+  default = "LambdaEC2FullAccess"
+}
