@@ -7,7 +7,7 @@ data "terraform_remote_state" "ec2" {
   }
 }
 
-module "volume" {
+module "volume-no-ebs" {
   source    = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/volumes"
   az        = "${var.AWS_REGIONS}b"
   size      = "${split(",", var.size)}"
@@ -22,9 +22,32 @@ module "volume" {
   purpose     = "${var.purpose}"
 }
 
-resource "aws_volume_attachment" "ebs_att" {
+resource "aws_volume_attachment" "ebs_att-no-ebs" {
   count       = "${length(var.device-name)}"
-  device_name = "/dev/${element(var.device-name, count.index)}"                                     # need to be a string
-  volume_id   = "${element(module.volume.volume-id, count.index)}"                                  # volume-id, need to a single value
-  instance_id = "${element(element(element(data.terraform_remote_state.ec2.outputs.id, 0), 0), 0)}" # instance-id
+  device_name = "/dev/${element(var.device-name, count.index)}"                         # need to be a string
+  volume_id   = "${element(module.volume-no-ebs.volume-id, count.index)}"               # volume-id, need to a single value
+  instance_id = "${element(element(data.terraform_remote_state.ec2.outputs.id, 0), 0)}" # instance-id
+  # instance_id = "${element(element(element(data.terraform_remote_state.ec2.outputs.id, 0), 0), 0)}" # instance-id
 }
+
+# module "volume-with-ebs" {
+#   source    = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/volumes"
+#   az        = "${var.AWS_REGIONS}b"
+#   size      = "${split(",", var.size)}"
+#   encrypted = "${var.encrypted}"
+
+#   # general tags
+#   name        = "${split(",", var.name)}"
+#   template    = "${var.template}"
+#   environment = "${terraform.workspace}"
+#   created-on  = "${var.creation_date}"
+#   application = "${var.application}"
+#   purpose     = "${var.purpose}"
+# }
+
+# resource "aws_volume_attachment" "ebs_att-with-ebs" {
+#   count       = "${length(var.device-name)}"
+#   device_name = "/dev/${element(var.device-name, count.index)}"                                     # need to be a string
+#   volume_id   = "${element(module.volume.volume-id, count.index)}"                                  # volume-id, need to a single value
+#   instance_id = "${element(element(element(data.terraform_remote_state.ec2.outputs.id, 0), 0), 0)}" # instance-id
+# }

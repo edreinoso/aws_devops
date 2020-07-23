@@ -12,7 +12,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "Action": "ssm:SendCommand",
           "Resource": [
               "arn:aws:ssm:us-east-1:130193131803:document/ebs_available",
-              "arn:aws:ec2:us-east-1:130193131803:instance/${module.ec2.ec2-id}"
+              "arn:aws:ec2:*:*:instance/*"
           ]
       }
   ]

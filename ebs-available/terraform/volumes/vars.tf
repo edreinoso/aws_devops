@@ -29,35 +29,35 @@ variable "encrypted" {
 
 # Changing Variables
 
-# variable "size" {
-#   type    = "string"
-#   default = "25"
-# }
-
-# variable "name" {
-#   type    = "string"
-#   default = "ebs-volume-available-test-1"
-# }
-
-# variable "device-name" {
-#   type    = "list"
-#   default = ["sdl"]
-# }
-
 variable "size" {
   type    = "string"
-  default = "25,20"
+  default = "25"
 }
 
 variable "name" {
   type    = "string"
-  default = "ebs-volume-available-test-1,ebs-volume-available-test-2"
+  default = "ebs-volume-available-test-1"
 }
 
 variable "device-name" {
   type    = "list"
-  default = ["sdl","sdk"]
+  default = ["sdl"]
 }
+
+# variable "size" {
+#   type    = "string"
+#   default = "25,20"
+# }
+
+# variable "name" {
+#   type    = "string"
+#   default = "ebs-volume-available-test-1,ebs-volume-available-test-2"
+# }
+
+# variable "device-name" {
+#   type    = "list"
+#   default = ["sdl","sdk"]
+# }
 
 # variable "size" {
 #   type    = "string"

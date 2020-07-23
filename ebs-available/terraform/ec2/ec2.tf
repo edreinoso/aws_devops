@@ -16,7 +16,7 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-module "ec2" {
+module "ec2-no-ebs" {
   source        = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
   ami           = "${var.ami}"
   instance-type = "${var.instance-type}"
@@ -25,6 +25,26 @@ module "ec2" {
     1,
   )}"
   ec2-name           = "${var.ec2-name}"
+  template           = "${var.template}"
+  public-ip          = "${var.public-ip-association["yes"]}"
+  instance-role      = "${var.instance-role}"
+  sourceCheck        = "${var.source-check["enable"]}"
+  key-name           = "${var.key-name["public"]}"
+  security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
+  created-on         = "${var.creation_date}"
+  application        = "${var.application}"
+  purpose            = "${var.purpose}"
+}
+
+module "ec2-with-ebs" {
+  source        = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
+  ami           = "${var.ami}"
+  instance-type = "${var.instance-type}"
+  subnet-ids = "${element(
+    element(data.terraform_remote_state.vpc.outputs.pub-subnet-1-id, 1),
+    1,
+  )}"
+  ec2-name           = "${var.ec2-name}-2"
   template           = "${var.template}"
   public-ip          = "${var.public-ip-association["yes"]}"
   instance-role      = "${var.instance-role}"
