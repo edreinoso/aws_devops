@@ -48,7 +48,3 @@ def lambda_handler(event, context):
         # print(type(world))
     # print(type(event['resources']))
     # print(type(event))
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
-    }
