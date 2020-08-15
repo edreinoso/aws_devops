@@ -6,8 +6,14 @@ import json
 # Global Variables
 TABLE_NAME = "IAMUserListMonitoring"
 TEMPLATE_NAME = "User_Console_Login_Monitoring"
-keyComparison = 'lastSignIn'
-userdata = {
+keyComparison = 'lastSignIn'  # this will serve to identify attribute to sort by
+usersSignedIn = {  # variable to capture all the signed in users
+    "data": []
+}
+sortedUserData = { # variable to sort all users that are sorted
+    "data": []
+}
+completeUserData = { # variable to hold all the complete user information: signed in and not signed in
     "data": []
 }
 today = datetime.now(tzutc())
@@ -18,25 +24,38 @@ def part1DDB():
     # print('hello world')
     client_ddb = boto3.resource('dynamodb')
     table = client_ddb.Table(TABLE_NAME)
-    response = table.scan(
+    # we are filtering data that is only related to today's execution time
+    response = table.scan(  # scanning table to get all items according to filter
         FilterExpression=boto3.dynamodb.conditions.Attr(
             'executionTime').eq(str(today.strftime("%a, %d %B %y")))
     )
     # print(response)
+    # 1st sub part: add data to different variables, one for sign in and one for not sign in
     for items in response['Items']:
         if (items["lastSignIn"] != "Have not signed in"):
-            print(items["username"]+'\t' +
-                  #   items["createDate"]+'\t'+items["lastSignIn"])
-                  str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y"))+'\t'+str(datetime.strptime(items["lastSignIn"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y")))
-            userdata["data"].append(
-                {"username": items["username"], "createDate": str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y")), "lastSignIn": str(datetime.strptime(items["lastSignIn"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y"))})
+            usersSignedIn["data"].append(
+                {"username": items["username"], "createDate": items["createDate"], "lastSignIn": items["lastSignIn"]})
         else:
-            print(items["username"]+'\t' +
-                  str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y"))+'\t'+items["lastSignIn"])
-            userdata["data"].append(
-                {"username": items["username"], "createDate": str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y")), "lastSignIn": items["lastSignIn"]})
-    bubble_sort(userdata["data"])  # passing userdata["data"], which is a list
-    return userdata  # it should actually returned the sorted userdata
+            completeUserData["data"].append({"username": items["username"], "createDate": str(datetime.strptime(
+                items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y")), "lastSignIn": items["lastSignIn"]})
+
+    # 2nd sub part: sort data that have the appropriate date
+    # sort the data
+    # passing userdata["data"], which is a list
+    bubble_sort(usersSignedIn["data"])
+
+    # 3rd sub part: transform usersSignedIn date values of to string str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y"))
+    for items in usersSignedIn["data"]:
+        sortedUserData["data"].append({"username": items["username"], "createDate": str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime(
+            "%a %d, %B %Y")), "lastSignIn": str(datetime.strptime(items["lastSignIn"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y"))})
+
+    # 4th sub part: add sortedUserData + userdataNotSignIn, the latter should be on top
+    for items in sortedUserData["data"]:
+        completeUserData["data"].append(
+            {"username": items["username"], "createDate": items["createDate"], "lastSignIn": items["lastSignIn"]})
+
+    print(completeUserData)
+    # return usersSignedIn  # it should actually returned the sorted userdata
 
 # part2
 
@@ -54,6 +73,9 @@ def part2SES(result):
     print(responseSend)
 
 # bubble sorting
+
+# sorting data according to the keyComparison
+# the logic uses the bubble sort algorithm
 
 
 def bubble_sort(nums):
@@ -76,8 +98,9 @@ def bubble_sort(nums):
 
 def lambda_handler(event, context):
     # 1st part: Getting data from DDB
+    print(str(today.strftime("%a, %d %B %y")))
     part1DDB()
-    result = json.dumps(userdata)
-    print(result)
-    # 2nd part: Create SES client
-    part2SES(result)
+    # result = json.dumps(completeUserData)
+    # print(result)
+    # # # 2nd part: Create SES client
+    # part2SES(result)
