@@ -4,16 +4,31 @@ module "new-vpc" {
   enable-dns-support  = "${var.vpc-dns-support}"
   enable-dns-hostname = "${var.vpc-dns-hostname}"
   #TAGS
-  vpc-name   = "${lookup(var.vpc-name, terraform.workspace)}"
-  template   = "${var.template}"
-  created-on = "${var.created-on}"
+  tags = {
+    "Environment"   = "${terraform.workspace}"
+    "Template"      = "${var.template}"
+    "Application"   = "${var.application}"
+    "Purpose"       = "${var.purpose}"
+    "Creation_Date" = "${var.created-on}"
+    "Name"          = "${var.vpc-name}-${terraform.workspace}"
+  }
+
 }
 
 module "igw-vpc" {
   source = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/network/igw"
   vpc-id = "${module.new-vpc.vpc-id}"
   #TAGS
-  igwName    = "${var.igw-name}"
-  template   = "${var.template}"
-  created-on = "${var.created-on}"
+  tags = {
+    "Environment"   = "${terraform.workspace}"
+    "Template"      = "${var.template}"
+    "Application"   = "${var.application}"
+    "Purpose"       = "${var.purpose}"
+    "Creation_Date" = "${var.created-on}"
+    "Name"          = "${var.igw-name}"
+  }
+  #TAGS
+  # igwName    = "${var.igw-name}"
+  # template   = "${var.template}"
+  # created-on = "${var.created-on}"
 }

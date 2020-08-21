@@ -2,11 +2,10 @@ variable "AWS_REGIONS" {
   default = "us-east-1"
 }
 
-
 #TAGS
 variable "template" {
   type    = "string"
-  default = "sandbox"
+  default = "aws_automation"
 }
 
 variable "created-on" {
@@ -14,13 +13,20 @@ variable "created-on" {
   default = "May 30th 2020"
 }
 
+variable "purpose" {
+  type    = "string"
+  default = ""
+}
+
+variable "application" {
+  type    = "string"
+  default = ""
+}
+
 #VPC Components
 variable "vpc-name" {
-  type = "map"
-
-  default = {
-    dev = "sandbox-vpc"
-  }
+  type    = "string"
+  default = "aws_automation"
 }
 
 variable "vpc-cidr" {
@@ -44,7 +50,7 @@ variable "vpc-dns-support" {
 #Internet gateway
 variable "igw-name" {
   type    = "string"
-  default = "sandbox-igw"
+  default = "aws_automation_figw"
 }
 
 #Subnet component
@@ -52,6 +58,11 @@ variable "igw-name" {
 variable "public-type" {
   type    = "string"
   default = "public"
+}
+
+variable "private-type" {
+  type    = "string"
+  default = "private"
 }
 
 variable "az1PublicSubnetCidr" {
@@ -70,11 +81,6 @@ variable "az1PublicSubnetNames" {
   }
 }
 
-variable "publicSubnet" {
-  type    = "string"
-  default = "public"
-}
-
 variable "az2PublicSubnetCidr" {
   type = "map"
 
@@ -90,12 +96,8 @@ variable "az2PublicSubnetNames" {
     dev = "public-subnet-02"
   }
 }
-#Private subnets
-variable "private-type" {
-  type    = "string"
-  default = "private"
-}
 
+#Private subnets
 variable "az1PrivateSubnetCidr" {
   type = "map"
 
@@ -108,7 +110,7 @@ variable "az1PrivateSubnetNames" {
   type = "map"
 
   default = {
-    dev = "private-app-subnet-01,private-db-subnet-01"
+    dev = "private-subnet-01,private-subnet-01"
   }
 }
 
@@ -124,7 +126,7 @@ variable "az2PrivateSubnetNames" {
   type = "map"
 
   default = {
-    dev = "private-app-subnet-02,private-db-subnet-02"
+    dev = "private-subnet-02,private-subnet-02"
   }
 }
 

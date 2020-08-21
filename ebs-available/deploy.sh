@@ -2,7 +2,7 @@ alias deployinstances='cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/
 
 alias destroyinstances='cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/ec2 && terraform destroy -auto-approve && cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/volumes && terraform destroy -auto-approve'
 
-alias devdeploy='cd /Users/elchoco/aws/aws_devops/ebs-available/lambda && zip dev_lambda_function.zip lambda_function.py && terraform apply -auto-approve'
+alias devdeploy='cd /Users/elchoco/aws/aws_devops/ebs-encrypt/lambda && zip dev_lambda_function.zip lambda_function.py && terraform apply -auto-approve'
 
 terraform init && terraform workspace select dev && cd /Users/elchoco/aws/aws_devops/ebs-available/terraform/volumes && terraform init && terraform workspace select dev && deployinstances
 

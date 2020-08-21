@@ -22,10 +22,6 @@ variable "creation_date" {
   default = "July_18_2020"
 }
 
-variable "encrypted" {
-  type    = "string"
-  default = "false"
-}
 
 # Changing Variables
 
@@ -42,6 +38,11 @@ variable "name" {
 variable "device-name" {
   type    = "list"
   default = ["sdl"]
+}
+
+variable "encrypted" {
+  type    = "string"
+  default = "false"
 }
 
 # variable "size" {

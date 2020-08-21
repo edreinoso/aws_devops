@@ -13,7 +13,7 @@ usersSignedIn = {  # variable to capture all the signed in users
 sortedUserData = { # variable to sort all users that are sorted
     "data": []
 }
-completeUserData = { # variable to hold all the complete user information: signed in and not signed in
+completeUserData = { # variable to hold all the complete user information: signed in and not signed
     "data": []
 }
 today = datetime.now(tzutc())
@@ -41,8 +41,8 @@ def part1DDB():
 
     # 2nd sub part: sort data that have the appropriate date
     # sort the data
-    # passing userdata["data"], which is a list
-    bubble_sort(usersSignedIn["data"])
+    # passing userdataSignedIn["data"], a dictionary that contains a list
+    sort_data(usersSignedIn["data"])
 
     # 3rd sub part: transform usersSignedIn date values of to string str(datetime.strptime(items["createDate"], "%Y-%m-%d %H:%M:%S+00:00").strftime("%a %d, %B %Y"))
     for items in usersSignedIn["data"]:
@@ -55,7 +55,6 @@ def part1DDB():
             {"username": items["username"], "createDate": items["createDate"], "lastSignIn": items["lastSignIn"]})
 
     print(completeUserData)
-    # return usersSignedIn  # it should actually returned the sorted userdata
 
 # part2
 
@@ -78,7 +77,7 @@ def part2SES(result):
 # the logic uses the bubble sort algorithm
 
 
-def bubble_sort(nums):
+def sort_data(nums):
     swapped = True
     while swapped:
         swapped = False
@@ -100,7 +99,7 @@ def lambda_handler(event, context):
     # 1st part: Getting data from DDB
     print(str(today.strftime("%a, %d %B %y")))
     part1DDB()
-    # result = json.dumps(completeUserData)
+    result = json.dumps(completeUserData)
     # print(result)
     # # # 2nd part: Create SES client
-    # part2SES(result)
+    part2SES(result)

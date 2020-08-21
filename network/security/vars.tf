@@ -15,7 +15,7 @@ variable "ips" {
 #TAGS
 variable "template" {
   type    = "string"
-  default = "sandbox"
+  default = "aws_automation"
 }
 
 variable "created-on" {
