@@ -36,6 +36,7 @@ def lambda_handler(event, context):
                 'username': i["Username"],
                 'createDate': str(i["CreateDate"]),
                 'lastSignIn': str(i["LastSignIn"]),
+                # would probably do the expiration time 
                 'executionTime': str(today.strftime("%a, %d %B %y")),
             }
         )

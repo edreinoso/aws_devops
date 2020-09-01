@@ -8,18 +8,18 @@ variable "template" {
 }
 
 variable "creation_date" {
-    type = "string"
-    default = "Jul_10_2018"
+  type    = "string"
+  default = "Jul_10_2018"
 }
 
 variable "application" {
-    type = "string"
-    default = "ebs-volume-available"
+  type    = "string"
+  default = "ebs-volume-available"
 }
 
 variable "purpose" {
-    type = "string"
-    default = "aws_devops"
+  type    = "string"
+  default = "aws_devops"
 }
 
 # EC2
@@ -42,25 +42,25 @@ variable "public-ip-association-true" {
 variable "source-check" {
   type = "map"
   default = {
-      enable = "true"
-      disable = ""
+    enable  = "true"
+    disable = ""
   }
 }
 
 variable "public-ip-association" {
-    type = "map"
-    default = {
-        yes = "true"
-        no = ""
-    }
+  type = "map"
+  default = {
+    yes = "true"
+    no  = ""
+  }
 }
 
 variable "key-name" {
-    type = "map"
-    default = {
-        public = "base-template"
-        private = "internal-base-template"
-    }
+  type = "map"
+  default = {
+    public  = "base-template"
+    private = "internal-base-template"
+  }
 }
 
 variable "ec2-name" {
@@ -69,8 +69,8 @@ variable "ec2-name" {
 }
 
 variable "instance-role" {
-    type = "string"
-    default = "EC2_Role"
+  type    = "string"
+  default = "EC2_Role"
 }
 
 
