@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # myinstanceid=`wget -q -O - http://169.254.169.254/latest/meta-data/instance-id`
 # aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=$myinstanceid > volume.json
 

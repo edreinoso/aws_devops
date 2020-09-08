@@ -62,5 +62,5 @@ variable "application" {
 
 variable "creation_date" {
   type    = "string"
-  default = "July_18_2020"
+  default = "Sept_7_2020"
 }
