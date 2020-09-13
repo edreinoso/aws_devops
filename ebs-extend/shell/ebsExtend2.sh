@@ -1,3 +1,7 @@
+# This script makes sure that the EBS volume is not above
+# the threshold (80%), otherwise the ebs volume is going
+# to call a Lambda to extend the volume
+
 for k in $(jq '.messages | keys | .[]' json_file.json); do
     value=$(jq -r ".messages[$k]" json_file.json);
     # Variable declaration
@@ -5,11 +9,13 @@ for k in $(jq '.messages | keys | .[]' json_file.json); do
     volumeId=$(jq -r '.volumeId' <<< "$value");
     size=$(jq -r '.volumeSize' <<< "$value");
     mountPoint=$(jq -r '.mountPoint' <<< "$value");
-    mountNumber=$(jq -r '.mountPoint' <<< "$value");
+    mountNumber=$(jq -r '.mountNumber' <<< "$value");
+    instanceId=$(jq -r '.instanceId' <<< "$value");
     timestamp=`date +%Y-%m-%d_%H:%M:%S`
 
     # Checking variables
-    echo "$volumeId" "$path"
+    echo "$volumeId" "$path" >> ~/pass80percent.txt
+    echo "$volumeId" "$path" >> ~/didNotPass80percent.txt
 
     ~/aws-scripts-mon/mon-put-instance-data.pl --disk-path="$path" --disk-space-util --verbose > ./ebsavailable.txt
     head -1 ./ebsavailable.txt > ./shortEbsUsed.txt
@@ -34,7 +40,7 @@ for k in $(jq '.messages | keys | .[]' json_file.json); do
         ~/ebsExtend1.sh
     else
         echo "$timestamp do nothing on $path with $volumeId and $size" >> ~/didNotPass80percent.txt
-        #echo >> ~/didNotPass80percent.txt
+                #echo >> ~/didNotPass80percent.txt
     fi
     #echo >> ~/didNotPass80percent.txt
 done

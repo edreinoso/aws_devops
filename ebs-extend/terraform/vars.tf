@@ -25,9 +25,11 @@ variable "created-on" {
   default = "May 30th 2020"
 }
 
-variable "custom-ami" {
+variable "ami" {
   type    = "string"
-  default = "ebs-extend-june-08"
+  # default = "ami-0603cbe34fd08cb81"
+  # default = "ami-07b66785f4f646ccf"
+  default = "ami-08f3d892de259504d"
 }
 
 variable "type" {

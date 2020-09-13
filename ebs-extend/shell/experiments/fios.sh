@@ -1,6 +1,7 @@
 timestamp=`date +%Y-%m-%d_%H:%M:%S`
 
 sudo fio --directory=/data --name $timestamp"_testing_file" --direct=0 --rw=randwrite --bs=4k --size=512M --numjobs=2 --time_based --runtime=180 --group_reporting
+sudo fio --directory=/data --name hello_world --direct=0 --rw=randwrite --bs=4k --size=512M --numjobs=2 --time_based --runtime=180 --group_reporting
 
 sudo fio --directory=/data \
   --name hello_world_4 \

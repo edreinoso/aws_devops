@@ -42,7 +42,7 @@
                     "   cp /etc/fstab /etc/fstab.orig",
                     "   blkid=`blkid -o value -s UUID $device`",
                     "   echo $blkid >> /home/ec2-user/test.txt",
-                    "   UUID=`echo $blkid     /$value           xfs    defaults,nofail  0  2`",
+                    "   UUID=`echo $blkid  /$value xfs  defaults,nofail  0  2`",
                     "   echo $UUID >> /etc/fstab",
                     "fi",
                     "echo divider >> /home/ec2-user/test.txt",
