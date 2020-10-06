@@ -1,3 +1,3 @@
-output "id" {
-  value = "${aws_instance.ec2.*.id}"
-}
+# output "id" {
+#   value = "${aws_instance.ec2.*.id}"
+# }

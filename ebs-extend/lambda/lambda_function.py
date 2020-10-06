@@ -2,6 +2,7 @@ import boto3
 import json
 import time
 
+
 def lambda_handler(event, context):
     modifiedSize = 5  # variable to modify volume
     documentName = event["document"]
@@ -9,13 +10,13 @@ def lambda_handler(event, context):
 
     for volumeIterator in event["ebsInfo"]:
         # print(type(volumeIterator["ebsSize"]))
-        print ('instance id: ' + volumeIterator["instanceId"])
-        
+        # print('instance id: ' + volumeIterator["instanceId"])
+
         response = client.modify_volume(
           VolumeId=volumeIterator["volumeId"],
           Size=int(volumeIterator["ebsSize"])+modifiedSize,
         )
-        # time.sleep(10)
+        time.sleep(10)
         path = volumeIterator["path"]
         ssm = boto3.client('ssm')
         response = ssm.send_command(

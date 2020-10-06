@@ -16,29 +16,18 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-# data "aws_ami" "custom_ami" {
-#   filter {
-#     name   = "name"
-#     values = ["${var.custom-ami}"]
-#   }
-#   owners = ["self"]
-# }
-
-resource "aws_instance" "ec2" {
-  # count         = "${length(var.volume-size)}"
-  ami           = "${var.ami}"
-  instance_type = "${var.type}"
-  key_name      = "${var.keys}"
-  subnet_id = "${element(
+module "ec2" {
+  source             = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
+  ami                = "${var.ami}"
+  instance-type      = "${var.type}"
+  security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
+  subnet-ids = "${element(
     element(data.terraform_remote_state.vpc.outputs.pub-subnet-1-id, 1),
     1,
   )}"
-  vpc_security_group_ids      = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
-  iam_instance_profile        = "${var.instance-role}"
-  associate_public_ip_address = "${var.public-ip == "" ? false : true}"
-  source_dest_check           = "${var.sourceCheck == "" ? false : true}"
-  # user_data                   = "${var.user-data}"
-
+  instance-role = "${var.instance-role}"
+  public-ip     = "${var.public-ip}"
+  key-name      = "${var.keys}"
 
   tags = {
     Name          = "${var.ec2-name}"
@@ -48,9 +37,4 @@ resource "aws_instance" "ec2" {
     Purpose       = "${var.purpose}"
     Creation_Date = "${var.created-on}"
   }
-
-  # ebs_block_device {
-  #   device_name = "${var.ec2-name}"
-  #   volume_size = "${split(",", var.volume-size)}"
-  # }
 }
