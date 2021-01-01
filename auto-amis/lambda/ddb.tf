@@ -27,6 +27,6 @@ module "dynamodb-table" {
 # to the dynamodb stream from the table above
 resource "aws_lambda_event_source_mapping" "cleaner_function" {
   event_source_arn  = "${module.dynamodb-table.ddb-stream-arn}"
-  function_name     = "${module.ddb_stream_function.arn}"
+  function_name     = "${module.cleaner_function.arn}"
   starting_position = "LATEST"
 }

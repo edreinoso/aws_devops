@@ -11,7 +11,8 @@ variable "table-name" {
 
 variable "primary-key" {
   type    = "string"
-  default = "instanceId"
+  # default = "instanceId"
+  default = "creationDate"
 }
 
 variable "attribute-type" {
