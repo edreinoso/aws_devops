@@ -17,7 +17,7 @@ data "terraform_remote_state" "vpc" {
 }
 
 module "ec2-ebs-1" {
-  source = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
+  source = "github.com/edreinoso/terraform_infrastructure_as_code/modules/compute/ec2"
   ami    = "${var.ami}"
   subnet-ids = "${element(
     element(data.terraform_remote_state.vpc.outputs.pub-subnet-2-id, 1),
@@ -30,9 +30,9 @@ module "ec2-ebs-1" {
   key-name           = "${var.key-name["public"]}"
   security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
   tags = {
-    Name          = "SSH_linux_bastion_b"
+    Name          = "ebs_encryption_2_b"
     Template      = "aws_devops"
-    Environment   = "${terraform.workspace}"
+    Environment   = "none"
     Application   = "ebs_encrypt"
     Purpose       = "Testing ebs encryption"
     Creation_Date = "Jan_1_2021"
@@ -51,7 +51,7 @@ module "ec2-ebs-1" {
 }
 
 module "ec2-ebs-2" {
-  source = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
+  source = "github.com/edreinoso/terraform_infrastructure_as_code/modules/compute/ec2"
   ami    = "${var.ami}"
   subnet-ids = "${element(
     element(data.terraform_remote_state.vpc.outputs.pub-subnet-2-id, 1),
@@ -64,9 +64,9 @@ module "ec2-ebs-2" {
   key-name           = "${var.key-name["public"]}"
   security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
   tags = {
-    Name          = "SSH_linux_bastion_b"
+    Name          = "ebs_encryption_1_b"
     Template      = "aws_devops"
-    Environment   = "${terraform.workspace}"
+    Environment   = "none"
     Application   = "ebs_encrypt"
     Purpose       = "Testing ebs encryption"
     Creation_Date = "Jan_1_2021"
@@ -85,7 +85,7 @@ module "ec2-ebs-2" {
 }
 
 module "ec2-ebs-3" {
-  source = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/ec2"
+  source = "github.com/edreinoso/terraform_infrastructure_as_code/modules/compute/ec2"
   ami    = "${var.ami}"
   subnet-ids = "${element(
     element(data.terraform_remote_state.vpc.outputs.pub-subnet-1-id, 1),
@@ -98,7 +98,7 @@ module "ec2-ebs-3" {
   key-name           = "${var.key-name["public"]}"
   security-group-ids = "${split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)}"
   tags = {
-    Name          = "ebs_encryption_b"
+    Name          = "ebs_encryption_1_a"
     Template      = "aws_devops"
     Environment   = "${terraform.workspace}"
     Application   = "ebs_encrypt"

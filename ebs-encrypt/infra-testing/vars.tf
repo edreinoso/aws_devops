@@ -83,12 +83,12 @@ variable "roleName" {
 
 variable "size" {
   type    = "string"
-  default = "10"
+  default = "10,20"
 }
 
 variable "name" {
   type    = "string"
-  default = "ebs-encryption"
+  default = "independent_ebs_1"
 }
 
 variable "device-name" {

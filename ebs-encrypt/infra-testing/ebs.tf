@@ -1,17 +1,18 @@
-# module "volume-no-ebs" {
-#   source    = "/Users/elchoco/aws/terraform_infrastructure_as_code/modules/compute/volumes"
-#   az        = "${var.AWS_REGIONS}b"
-#   size      = "${split(",", var.size)}"
-#   encrypted = "${var.encrypted}"
+module "volume-no-ebs" {
+  source    = "github.com/edreinoso/terraform_infrastructure_as_code/modules/compute/volumes"
+  az        = "${var.AWS_REGIONS}b"
+  size      = "${split(",", var.size)}"
+  encrypted = "${var.encrypted}"
 
-#   # general tags
-#   name        = "${split(",", var.name)}"
-#   template    = "${var.template}"
-#   environment = "${terraform.workspace}"
-#   created-on  = "${formatdate("MMMM-DD-YYYY-hh-mm-ss", timestamp())}"
-#   application = "${var.application}"
-#   purpose     = "${var.purpose}"
-# }
+  tags = {
+    Name          = "${var.name}"
+    Template      = "aws_devops"
+    Environment   = "${terraform.workspace}"
+    Application   = "ebs_encrypt"
+    Purpose       = "Testing ebs encryption"
+    Creation_Date = "Jan_1_2021"
+  }
+}
 
 # resource "aws_volume_attachment" "ebs_att-no-ebs" {
 #   count       = "${length(var.device-name)}"
