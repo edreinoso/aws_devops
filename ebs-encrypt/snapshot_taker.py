@@ -100,6 +100,11 @@ def lambda_handler(event, context):
                     },
                 ]
             )
+            
+            # this is required so that it can be excluded
+            volume_data['data'].append({'SnapshotId': snapshot['SnapshotId'], 'RootVolume': rootVolume,
+                                        'Name': volumeTagName, 'VolumeSize': x['Size'], 'AZ': x['AvailabilityZone'], 'Type': x['VolumeType'], 'InstanceId': instanceId, 'Device': volumeDevice, 'VolumeId': x['VolumeId']})
+            
             client.create_tags(
                 Resources=[
                     x['VolumeId'],
@@ -111,10 +116,7 @@ def lambda_handler(event, context):
                     },
                 ]
             )
-            # this is required so that it can be excluded
-            volume_data['data'].append({'SnapshotId': snapshot['SnapshotId'], 'RootVolume': rootVolume,
-                                        'Name': volumeTagName, 'VolumeSize': x['Size'], 'AZ': x['AvailabilityZone'], 'Type': x['VolumeType'], 'InstanceId': instanceId, 'Device': volumeDevice, 'VolumeId': x['VolumeId']})
-
+            
             ddb_table.put_item(  # putting new items to the DynamoDB table
                 Item={
                     'Name': volumeTagName,

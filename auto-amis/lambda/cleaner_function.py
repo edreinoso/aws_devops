@@ -1,15 +1,13 @@
 import boto3
 
-# in this function, I want to be able to poll the changes done on
+# in this function, I want to be able to poll the changes from
 # DynamoDB streams. I am expecting to receive a piece of data related
-# to the instance, so that I can delete the AMI that was created
-# deregistration does not necessarily mean that the snapshot is going
-# to get cleaned out. Need to have a mechanicsm for deleting snapshots
-# from AMIs
+# to the instance, so that I can deregister the AMI that was created
 
 # most important methods
 # deregister_image(): required InstanceId
-
+# describe_snapshots(): listing AMI snapshots
+# delete_snapshot(): deleting those snapshots
 
 def lambda_handler(event, context):
     client_ec2 = boto3.client('ec2')
@@ -20,7 +18,6 @@ def lambda_handler(event, context):
         print('record: ' + str(record))
         print(record['eventID'])
         print(record['eventName'])
-        #print(record['dynamodb'])
         # we'd be trying to filter events based on the name
         # we're trying to look for events that are removed
         # from the dynamodb table
@@ -30,9 +27,6 @@ def lambda_handler(event, context):
 
             print('ami id: ' + imageId + 'created at: ' + creationDate)
 
-            # an error ocurred while trying to delete an AMI
-            # should be fixing this issue by throwing an error
-            # handler
             response = client_ec2.describe_images(
                 ImageIds=[
                     imageId,

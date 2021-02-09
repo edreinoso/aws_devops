@@ -4,22 +4,22 @@ variable "AWS_REGIONS" {
 
 # EC2
 variable "ami" {
-  type    = "string"
+  type    = string
   default = "ami-08f3d892de259504d"
 }
 
 variable "instance-type" {
-  type    = "string"
+  type    = string
   default = "t2.micro"
 }
 
 variable "public-ip-association-true" {
-  type    = "string"
+  type    = string
   default = "true"
 }
 
 variable "source-check" {
-  type = "map"
+  type = map
   default = {
     enable  = "true"
     disable = ""
@@ -27,7 +27,7 @@ variable "source-check" {
 }
 
 variable "public-ip-association" {
-  type = "map"
+  type = map
   default = {
     yes = "true"
     no  = ""
@@ -35,7 +35,7 @@ variable "public-ip-association" {
 }
 
 variable "key-name" {
-  type = "map"
+  type = map
   default = {
     public  = "base-template"
     private = "internal-base-template"
@@ -43,6 +43,6 @@ variable "key-name" {
 }
 
 variable "instance-role" {
-  type    = "string"
+  type    = string
   default = "EC2_Role"
 }

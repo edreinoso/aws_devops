@@ -20,7 +20,7 @@ EOF
   tags = {
     Name          = "auto-amis-role"
     Template      = "devops"
-    Environment   = "${terraform.workspace}"
+    Environment   = terraform.workspace
     Application   = "auto ami automation"
     Purpose       = "role for the functions to assume and execute operations"
     Creation_Date = "Jan 1st"

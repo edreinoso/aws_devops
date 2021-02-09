@@ -5,98 +5,98 @@ variable "AWS_REGIONS" {
 # DDB
 
 variable "table-name" {
-  type    = "string"
+  type    = string
   default = "AutoAMIRecord"
 }
 
 variable "primary-key" {
-  type    = "string"
+  type    = string
   # default = "instanceId"
   default = "creationDate"
 }
 
 variable "attribute-type" {
-  type    = "string"
+  type    = string
   default = "S"
 }
 
 variable "read-write-capacity" {
-  type    = "string"
+  type    = string
   default = "5"
 }
 
 variable "billing" {
-  type    = "string"
+  type    = string
   default = "PROVISIONED"
 }
 
 variable "streams" {
-  type    = "string"
+  type    = string
   default = "true"
 }
 
 variable "stream-view" {
-  type    = "string"
+  type    = string
   default = "NEW_AND_OLD_IMAGES"
 }
 
 variable "ttl-enabled" {
-  type    = "string"
+  type    = string
   default = "true"
 }
 
 variable "ttl-attribute" {
-  type    = "string"
+  type    = string
   default = "expiryDate"
 }
 
 # Lambda
 
 variable "file-name-taker" {
-  type = "string"
+  type = string
   default = "taker.zip"
 }
 variable "file-name-cleaner" {
-  type = "string"
+  type = string
   default = "cleaner.zip"
 }
 
 variable "function-name-taker" {
-  type    = "string"
+  type    = string
   default = "Auto-AMI-taker"
 }
 variable "function-name-cleaner" {
-  type    = "string"
+  type    = string
   default = "Auto-AMI-cleaner"
 }
 
 variable "role" {
-  type    = "string"
+  type    = string
   default = "arn:aws:iam::130193131803:role/LambdaEC2FullAccess"
 }
 
 variable "runtime" {
-  type    = "string"
+  type    = string
   default = "python2.7"
 }
 
 variable "handler" {
-  type    = "string"
+  type    = string
   default = "lambda_handler"
 }
 
 variable "timeout" {
-  type    = "string"
+  type    = string
   default = "100"
 }
 
 variable "memory-size" {
-  type    = "string"
+  type    = string
   default = "128"
 }
 
 # this is for including the role policies
 variable "roleName" {
-  type    = "string"
+  type    = string
   default = "LambdaEC2FullAccess"
 }
