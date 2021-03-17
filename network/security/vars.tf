@@ -3,22 +3,22 @@ variable "AWS_REGIONS" {
 }
 
 variable "devops-sg-name-pub" {
-  type    = "string"
+  type    = string
   default = "devops"
 }
 
 variable "ips" {
-  type    = "string"
-  default = "100.12.75.72/32,24.60.137.153/32"
+  type    = string
+  default = "145.108.83.236/32,80.112.143.163/32"
 }
 
 #TAGS
 variable "template" {
-  type    = "string"
+  type    = string
   default = "aws_automation"
 }
 
 variable "created-on" {
-  type    = "string"
+  type    = string
   default = "July_20_2020"
 }
