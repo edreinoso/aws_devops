@@ -21,7 +21,7 @@ module "amazon_linux" {
   ami           = var.ami["amazon"]
   instance-type = var.instance-type
   subnet-ids = element(
-    element(data.terraform_remote_state.vpc.outputs.pub-subnet-1-id, 1),
+    element(data.terraform_remote_state.vpc.outputs.pub-subnet-2-id, 1),
     1,
   )
   public-ip          = var.public-ip-association["yes"]
@@ -55,9 +55,44 @@ module "redhat" {
   tags = {
     Name          = "eni_attch_rh_az_a"
     Template      = "devops"
-    Environment   = terraform.workspace
     Application   = "eni attachment"
     Purpose       = "launching redhat test linux instance to try the eni attachment"
     Creation_Date = "12 March"
+  }
+}
+
+# module "nic-rhel" {
+#   source        = "github.com/edreinoso/terraform_infrastructure_as_code/modules/network/eni"
+# }
+
+resource "aws_network_interface" "eni-rhel" {
+  #if ${data.aws_network_interface.get-aws-nic}
+  subnet_id = element(
+    element(data.terraform_remote_state.vpc.outputs.pub-subnet-1-id, 1),
+    1,
+  )
+  security_groups = split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)
+  attachment {
+    instance     = module.redhat.ec2-id
+    device_index = 1
+  }
+  tags = {
+    Name          = "eni_attch_rhel_az_a"
+  }
+}
+
+resource "aws_network_interface" "eni-al" {
+  #if ${data.aws_network_interface.get-aws-nic}
+  subnet_id = element(
+    element(data.terraform_remote_state.vpc.outputs.pub-subnet-2-id, 1),
+    1,
+  )
+  security_groups = split(",", data.terraform_remote_state.security.outputs.aws-devops-sg-id)
+  attachment {
+    instance     = module.amazon_linux.ec2-id
+    device_index = 1
+  }
+  tags = {
+    Name          = "eni_attch_al_az_a"
   }
 }

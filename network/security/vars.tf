@@ -9,7 +9,7 @@ variable "devops-sg-name-pub" {
 
 variable "ips" {
   type    = string
-  default = "145.108.83.236/32,80.112.143.163/32"
+  default = "145.108.83.236/32,80.112.143.163/32,80.112.143.163"
 }
 
 #TAGS

@@ -6,7 +6,7 @@ variable "AWS_REGIONS" {
 variable "ami" {
   type    = map
   default = {
-      amazon = "ami-08f3d892de259504d"
+      amazon = "ami-08f3d892de259504d" # rhel 8
       redhat = "ami-096fda3c22c1c990a"
   }
 }
