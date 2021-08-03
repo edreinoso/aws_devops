@@ -2,26 +2,21 @@
   "schemaVersion": "2.2",
   "description": "Command Document Example JSON Template",
   "parameters": {
-    "VolumePath": {
+    "NetworkInterface0": {
       "type": "String",
-      "description": "Volume path that will be extended",
+      "description": "Primary network interface from instance",
       "default": ""
     },
-    "MountPoint": {
+    "NetworkInterface1": {
       "type": "String",
-      "description": "Value of mount point to extend the partition",
-      "default": ""
-    },
-    "MountNumber": {
-      "type": "String",
-      "description": "Number of partition",
+      "description": "Secondary network interface from instance",
       "default": ""
     }
   },
   "mainSteps": [
     {
       "action": "aws:runShellScript",
-      "name": "example",
+      "name": "eni_attachment",
       "inputs": {
         "runCommand": [
           "#!/bin/bash",

@@ -1,8 +1,10 @@
 #!/bin/bash
 
-eni0=xyz
-eni1=abc
+eni0='{{NetworkInterface0}}'
+eni1='{{NetworkInterface1}}'
 gw=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
+
+echo $eni0 $eni1 $gw >> /home/centos/networkInterfaces.txt
 
 # creates the configuration for the network interface
 cat >> /etc/sysconfig/network-scripts/ifcfg-eth1 <<EOF
