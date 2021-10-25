@@ -1,0 +1,23 @@
+{
+    "Description": "",
+    "DryRun": true,
+    "Groups": [
+        ""
+    ],
+    "Ipv6AddressCount": 0,
+    "Ipv6Addresses": [
+        {
+            "Ipv6Address": ""
+        }
+    ],
+    "PrivateIpAddress": "",
+    "PrivateIpAddresses": [
+        {
+            "Primary": true,
+            "PrivateIpAddress": ""
+        }
+    ],
+    "SecondaryPrivateIpAddressCount": 0,
+    "InterfaceType": "efa",
+    "SubnetId": ""
+}

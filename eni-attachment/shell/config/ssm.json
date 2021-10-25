@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "2.2",
+  "description": "Command Document Example JSON Template",
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "eni_attachment",
+      "inputs": {
+        "runCommand": [
+          "#!/bin/bash",
+          "gw=`route -n | grep 'UG[ \t]' | awk '{print $2}'`",
+          "echo $gw >> /home/centos/helloworld.txt"
+        ]
+      }
+    }
+  ]
+}

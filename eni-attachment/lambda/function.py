@@ -3,27 +3,17 @@ import json
 import time
 
 ssm = boto3.client('ssm')
-client = boto3.client('ec2')
+
 
 def lambda_handler(event, context):
     print(event)
-    nicaddr = []
 
+    # instanceId = event['detail']['requestParameters']['instanceId']
+    instanceId = 'i-01d0fe003063b5b73'
 
-    instanceId = event['detail']['requestParameters']['instanceId']
-
-    response = client.describe_instances(
-        InstanceIds=[
-            instanceId,
-        ],
+    ssm.send_command(
+        InstanceIds=[instanceId],
+        DocumentName='eni-attachment',  # need to obtainde this value
+        DocumentVersion='$LATEST',
+        Comment='Attaching secondary network interface to instance'
     )
-
-    print(response)
-
-    for ec2 in response['Reservations']:
-        for instance in ec2['Instances']:
-            for interface in instance['NetworkInterfaces']:
-                print(interface['PrivateIpAddress'])
-                nicaddr.append(interface['PrivateIpAddress'])
-
-    print(nicaddr)

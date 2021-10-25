@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "2.2",
+  "description": "Command Document Example JSON Template",
+  "parameters": {
+    "NetworkInterfaces": {
+      "type": "StringList",
+      "description": "Network interfaces to attach to instance",
+      "minItems": 1,
+      "displayType": "textarea"
+    }
+  },
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "eni_attachment",
+      "inputs": {
+        "runCommand": [
+          "#!/bin/bash",
+          "declare -A nic",
+          "gw=`route -n | grep 'UG[ \t]' | awk '{print $2}'`",
+          "cat >> /etc/sysconfig/network-scripts/ifcfg-eth1 <<EOF",
+          "DEVICE=\"eth1\"",
+          "BOOTPROTO=\"dhcp\"",
+          "ONBOOT=\"yes\"",
+          "TYPE=\"Ethernet\"",
+          "USERCTL=\"yes\"",
+          "PEERDNS=\"yes\"",
+          "IPV6INIT=\"no\"",
+          "DEFROUTE=\"no\"",
+          "EOF",
+          "systemctl restart network.service",
+          "nic1=`hostname -I | awk '{print $1}'`",
+          "nic2=`hostname -I | awk '{print $2}'`",
+          "echo $nic1 $nic2 >> helloworld.txt",
+          "ip rule add from $nic1/32 lookup 100",
+          "ip rule add from $nic2/32 lookup 200",
+          "echo \"from $nic1/32 lookup 100\" >> /etc/sysconfig/network-scripts/rule-eth0",
+          "echo \"from $nic2/32 lookup 200\" >> /etc/sysconfig/network-scripts/rule-eth1",
+          "ip route add default via $gw dev eth0 table 100",
+          "ip route add default via $gw dev eth1 table 200",
+          "echo \"default via $gw dev eth0 table 100\" >> /etc/sysconfig/network-scripts/route-eth0",
+          "echo \"default via $gw dev eth1 table 200\" >> /etc/sysconfig/network-scripts/route-eth1"
+        ]
+      }
+    }
+  ]
+}

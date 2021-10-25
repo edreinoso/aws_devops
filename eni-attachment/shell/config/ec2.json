@@ -1,0 +1,36 @@
+{
+    "ImageId": "ami-030ecf1d3c0b8613b",
+    "InstanceType": "t2.micro",
+    "KeyName": "base-template",
+    "SecurityGroupIds": [
+        "sg-0a4b6425deaa18d35"
+    ],
+    "SubnetId": "subnet-0ec7811be535284dc",
+    "UserData": "helloworld.sh",
+    "IamInstanceProfile": {
+        "Arn": "arn:aws:iam::130193131803:instance-profile/EC2_Role"
+    },
+    "TagSpecifications": [
+        {
+            "ResourceType": "instance",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "centos-7_v2"
+                },
+                {
+                    "Key": "Date",
+                    "Value": "Oct 25, 2021"
+                },
+                {
+                    "Key": "Application",
+                    "Value": "ENI attachment"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "DevOps"
+                }
+            ]
+        }
+    ]
+}

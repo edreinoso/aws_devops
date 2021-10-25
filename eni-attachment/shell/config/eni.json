@@ -1,0 +1,7 @@
+{
+    "Description": "cent-os-secondary-eni",
+    "Groups": [
+        "sg-0a4b6425deaa18d35"
+    ],
+    "SubnetId": "subnet-0e6c0f395d10225b4"
+}
