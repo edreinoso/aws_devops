@@ -1,6 +1,13 @@
-centos i-0100d47078f733d77
+centos v3 i-0903330da1abb1e66
+    subnet-0ec7811be535284dc
+    ami-0eff1cc187af25bc0 # recent centos ami
+
+    2nd: 
+    eni-0135db642d8a403f2
+
+centos v2 i-0100d47078f733d77 ## stopped
     subnet-0e6c0f395d10225b4
-    ami-030ecf1d3c0b8613b
+    xami-030ecf1d3c0b8613b # old centos ami
     
     2nd
     eni-07a5ad29754225b47
@@ -17,3 +24,9 @@ centos i-0100d47078f733d77
 amazon i-0600c37356d21e664
     subnet-0ec7811be535284dc
     ami-02e136e904f3da870
+
+manual centos i-0100d47078f733d77
+    baked ami
+        ssm agent
+        centos7
+    configured second eni manually

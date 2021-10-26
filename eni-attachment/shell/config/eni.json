@@ -1,5 +1,5 @@
 {
-    "Description": "cent-os-secondary-eni",
+    "Description": "centos-7_v3",
     "Groups": [
         "sg-0a4b6425deaa18d35"
     ],

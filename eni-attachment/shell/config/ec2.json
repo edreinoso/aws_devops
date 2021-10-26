@@ -1,5 +1,5 @@
 {
-    "ImageId": "ami-030ecf1d3c0b8613b",
+    "ImageId": "ami-0eff1cc187af25bc0",
     "InstanceType": "t2.micro",
     "KeyName": "base-template",
     "SecurityGroupIds": [
@@ -16,11 +16,11 @@
             "Tags": [
                 {
                     "Key": "Name",
-                    "Value": "centos-7_v2"
+                    "Value": "centos-7_v3"
                 },
                 {
                     "Key": "Date",
-                    "Value": "Oct 25, 2021"
+                    "Value": "Oct 26, 2021"
                 },
                 {
                     "Key": "Application",
