@@ -1,0 +1,6 @@
+{
+    "Description": "centos for devops eni attachment function experimentation",
+    "InstanceId": "i-0100d47078f733d77",
+    "Name": "centos7",
+    "NoReboot": true
+}

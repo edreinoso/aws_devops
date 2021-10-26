@@ -1,7 +1,7 @@
 # cli for detaching and attaching network interface
 ## create, attach, detach
 aws ec2 create-network-interface --cli-input-json
-aws ec2 attach-network-interface --device-index 1 --instance-id i-01d0fe003063b5b73 --network-interface-id eni-00fd0a2f7cd87e8ec
+aws ec2 attach-network-interface --device-index 2 --instance-id i-0100d47078f733d77 --network-interface-id eni-0bb80bee08461d130
 aws ec2 detach-network-interface --attachment-id eni-attach-04c478f8e6bc17d91
 
 

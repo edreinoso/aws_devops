@@ -1,10 +1,7 @@
 #!/bin/bash
 
-eni0='{{NetworkInterface0}}'
-eni1='{{NetworkInterface1}}'
+# there was a way of getting these network interfaces with some commands
 gw=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
-
-echo $eni0 $eni1 $gw >> /home/centos/networkInterfaces.txt
 
 # creates the configuration for the network interface
 cat >> /etc/sysconfig/network-scripts/ifcfg-eth1 <<EOF
@@ -22,6 +19,9 @@ EOF
 systemctl restart network.service
 
 sleep 10
+
+eni0=`hostname -I | awk '{print $1}'`
+eni1=`hostname -I | awk '{print $2}'`
 
 # perform the necessary routing changes
 ip rule add from $eni0/32 lookup 100

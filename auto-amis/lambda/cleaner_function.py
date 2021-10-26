@@ -9,6 +9,7 @@ import boto3
 # describe_snapshots(): listing AMI snapshots
 # delete_snapshot(): deleting those snapshots
 
+
 def lambda_handler(event, context):
     client_ec2 = boto3.client('ec2')
     print('Hello World from Cleaner Function')
