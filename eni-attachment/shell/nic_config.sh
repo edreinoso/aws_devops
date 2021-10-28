@@ -18,6 +18,8 @@ EOF
 # this commands restarts teh network config in instance
 systemctl restart network.service
 
+# get the status
+
 sleep 10 # there is a possibility here where restarting the network service might take longer. However, currently this is static and might need some improvements
 
 eni0=`hostname -I | awk '{print $1}'`

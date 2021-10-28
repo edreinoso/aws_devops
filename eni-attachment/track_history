@@ -1,25 +1,13 @@
-centos v3 i-0903330da1abb1e66
+i-09459e01e3727223e
+eni-0988d2262125efb33
+
+
+centos v5 i-0b7a0e3692a386f65
     subnet-0ec7811be535284dc
     ami-0eff1cc187af25bc0 # recent centos ami
 
-    2nd: 
-    eni-0135db642d8a403f2
-
-centos v2 i-0100d47078f733d77 ## stopped
-    subnet-0e6c0f395d10225b4
-    xami-030ecf1d3c0b8613b # old centos ami
-    
     2nd
-    eni-07a5ad29754225b47
-    eni-attach-0a309e143a9115d45
-
-    3rd - t2.micro do not allow
-    eni-0bb80bee08461d130
-
-    xi-00dc4d3d8da0a786d
-    xi-01d0fe003063b5b73
-    xeni-00fd0a2f7cd87e8ec
-    xeni-attach-018c2f63206c7e869
+    eni-04badad942aa0f869
 
 amazon i-0600c37356d21e664
     subnet-0ec7811be535284dc

@@ -8,7 +8,7 @@
       "inputs": {
         "runCommand": [
           "gw=`route -n | grep 'UG[ \t]' | awk '{print $2}'`",
-          "echo $gw >> /home/centos/testing23.txt",
+          "echo $gw >> testing17.txt",
           "cat >> /etc/sysconfig/network-scripts/ifcfg-eth1 <<EOF",
           "DEVICE=\"eth1\"",
           "BOOTPROTO=\"dhcp\"",
@@ -23,7 +23,7 @@
           "sleep 10",
           "nic1=`hostname -I | awk '{print $1}'`",
           "nic2=`hostname -I | awk '{print $2}'`",
-          "echo $nic1 $nic2 >> /home/centos/testing23.txt",
+          "echo $nic1 $nic2 >> testing17.txt",
           "ip rule add from $nic1/32 lookup 100",
           "ip rule add from $nic2/32 lookup 200",
           "ip route add default via $gw dev eth0 table 100",
