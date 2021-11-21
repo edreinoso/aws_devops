@@ -5,8 +5,7 @@
     "SecurityGroupIds": [
         "sg-0a4b6425deaa18d35"
     ],
-    "SubnetId": "subnet-0ec7811be535284dc",
-    "UserData": "helloworld.sh",
+    "SubnetId": "subnet-0e6c0f395d10225b4",
     "IamInstanceProfile": {
         "Arn": "arn:aws:iam::130193131803:instance-profile/EC2_Role"
     },
@@ -16,11 +15,11 @@
             "Tags": [
                 {
                     "Key": "Name",
-                    "Value": "centos-7_v5"
+                    "Value": "centos-7_v10"
                 },
                 {
                     "Key": "Date",
-                    "Value": "Oct 27, 2021"
+                    "Value": "Nov 16th, 2021"
                 },
                 {
                     "Key": "Application",

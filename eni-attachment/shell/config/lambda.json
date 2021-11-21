@@ -1,0 +1,15 @@
+{
+    "FunctionName": "eni_configuration",
+    "Runtime": "python3.8",
+    "Role": "arn:aws:iam::130193131803:role/eni_attachment",
+    "Handler": "function.lambda_handler",
+    "Code": {
+        "ZipFile": "fileb://function.zip"
+    },
+    "Description": "Configure secondary network interface",
+    "Timeout": 30,
+    "MemorySize": 128,
+    "Tags": {
+        "Application": "Eni_attachment"
+    }
+}

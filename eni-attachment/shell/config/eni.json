@@ -1,7 +1,7 @@
 {
-    "Description": "centos-7_v6",
+    "Description": "centos-7_v10",
     "Groups": [
         "sg-0a4b6425deaa18d35"
     ],
-    "SubnetId": "subnet-0ec7811be535284dc"
+    "SubnetId": "subnet-0e6c0f395d10225b4"
 }

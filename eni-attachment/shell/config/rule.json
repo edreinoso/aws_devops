@@ -1,0 +1,12 @@
+{
+    "Name": "eni_configuration2",
+    "EventPattern": "{ \"source\": [\"aws.ec2\"], \"detail-type\": [\"AWS API Call via CloudTrail\"], \"detail\": { \"eventSource\": [\"ec2.amazonaws.com\"], \"eventName\": [\"AttachNetworkInterface\"] } }",
+    "State": "ENABLED",
+    "Description": "Configuring secondary network interfaces",
+    "Tags": [
+        {
+            "Key": "Application",
+            "Value": "Eni_attachment"
+        }
+    ]
+}

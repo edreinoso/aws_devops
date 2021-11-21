@@ -1,3 +1,3 @@
 # testing commands
 
-netstat -i >> v1.txt && /sbin/ifconfig -a >> v1.txt && ip addr li >> v1.txt && ip link show >> v1.txt
+netstat -i >> v2.txt && /sbin/ifconfig -a >> v2.txt && ip addr li >> v2.txt && ip link show >> v2.txt
