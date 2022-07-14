@@ -33,9 +33,3 @@ def lambda_handler(event, context):
             else:
                 print('stopping instance:' + instance)
                 stopInstance.stop_rds(instance, client)
-
-            # LATER LEARNING:
-            # implement a swich statement: it could actually
-            # easier to do an if statements, but for the sake
-            # of learning, let's implement a switch
-        print('\n')
