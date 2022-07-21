@@ -11,8 +11,8 @@ def lambda_handler(event, context):
             if tags_name in instance:
                 for tags in instance["Tags"]:
                     if (tags['Key'] == 'Name'):
-                        instanceNameTagValue = tags['Value']
-                        # print('instance name tag: ' + instanceNameTagValue)
+                        instance_name_tag_value = tags['Value']
+                        # print('instance name tag: ' + instance_name_tag_value)
 
             volume = client.describe_volumes(
                 Filters=[
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
             )
 
             for ebs in volume["Volumes"]:
-                create_tag(ebs["VolumeId"], instanceNameTagValue)
+                create_tag(ebs["VolumeId"], instance_name_tag_value)
         # print('\n')
 
 
