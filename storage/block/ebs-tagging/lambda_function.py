@@ -1,31 +1,26 @@
 import boto3
+
 client = boto3.client('ec2')
 
 
 def lambda_handler(event, context):
     tags_name = 'Tags'
-    ec2 = client.describe_instances()
+    instance_id = event['detail']['requestParameters']['instanceId']
+    volume_id = event['detail']['requestParameters']['volumeId']
 
-    for aws in ec2['Reservations']:
-        for instance in aws['Instances']:
-            if tags_name in instance:
-                for tags in instance["Tags"]:
-                    if (tags['Key'] == 'Name'):
-                        instance_name_tag_value = tags['Value']
-                        # print('instance name tag: ' + instance_name_tag_value)
+    ec2 = client.describe_instances(
+        InstanceIds=[
+            instance_id
+        ]
+    )
 
-            volume = client.describe_volumes(
-                Filters=[
-                    {
-                        'Name': 'attachment.instance-id',
-                        'Values': [instance["InstanceId"]]
-                    }
-                ]
-            )
+    if tags_name in ec2['Reservations'][0]['Instances'][0]:
+        ec2_tags = ec2['Reservations'][0]['Instances'][0]['Tags']
+        for tag in ec2_tags:
+            if (tag['Key'] == 'Name'):
+                create_tag(volume_id, tag['Value'])
 
-            for ebs in volume["Volumes"]:
-                create_tag(ebs["VolumeId"], instance_name_tag_value)
-        # print('\n')
+    return
 
 
 def create_tag(volume_id, value):
