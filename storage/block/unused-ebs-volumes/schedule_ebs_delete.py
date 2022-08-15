@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import json
 import boto3
 
 events = boto3.client('events')
@@ -6,9 +7,18 @@ ec2 = boto3.client('ec2')
 function = boto3.client('lambda')
 
 
-def handler(event, context):
-    five_days_from_now = datetime.now() + timedelta(days=5)
+def datetime_to_cron(dt):
+    return f"cron({dt.minute} {dt.hour} {dt.day} {dt.month} ? {dt.year})"
+
+
+def lambda_handler(event, context):
+    five_days_from_now = datetime.now() + timedelta(minutes=3)
+    schedule = datetime_to_cron(datetime.strptime(
+        str(five_days_from_now.replace(microsecond=0)), "%Y-%m-%d %H:%M:%S"))
+
     volume_id = event['detail']['requestParameters']['volumeId']
+
+    print(volume_id)
 
     """
      Create tags
@@ -18,7 +28,7 @@ def handler(event, context):
         Tags=[
             {
                 'Key': 'CleanUp',
-                'Value': str(five_days_from_now)
+                'Value': str(five_days_from_now.replace(microsecond=0))
             }
         ]
     )
@@ -28,28 +38,35 @@ def handler(event, context):
      Put target
      Add Lambda permission
     """
+    name = 'foobar'
     events.put_rule(
-        Name='name',
-        ScheduleExpression=five_days_from_now,
+        Name=name,
+        ScheduleExpression=schedule,
         State='ENABLED',
         Description='description'
     )
 
+    body = {
+        'volume_id': volume_id
+    }
+
+    input_obj = json.dumps(body)
+
     events.put_targets(
-        Rule='id',
+        Rule=name,
         Targets=[
             {
-                'Id': 'id',
-                'Arn': 'lambda_arn',
-                'Input': 'input_obj'
+                'Id': name,
+                'Arn': 'arn:aws:lambda:us-east-1:130193131803:function:function_test2',
+                'Input': input_obj
             },
         ]
     )
 
     function.add_permission(
-        FunctionName='function_name',
-        StatementId='id',
-        Action='invoke:Lambda',
+        FunctionName='function_test2',
+        StatementId=name,
+        Action='lambda:InvokeFunction',
         Principal='events.amazonaws.com',
-        SourceArn='lambda_arn',
+        SourceArn=f'arn:aws:events:us-east-1:130193131803:rule/{name}'
     )

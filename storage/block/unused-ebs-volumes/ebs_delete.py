@@ -18,7 +18,7 @@ ec2 = boto3.resource('ec2')
 
 
 def lambda_handler(event, context):
-    volume_id = event['volumeId']
+    volume_id = event['volume_id']
 
     """
      Describe volume:
